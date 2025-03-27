@@ -1,0 +1,23 @@
+
+
+{
+    "name": "Study Smart",
+    "short_name": "HB Study Timer",
+    "description": "StudySmart Tracker is a comprehensive productivity app that helps students track study sessions with a Pomodoro timer, monitor progress with analytics, and stay motivated with achievements and goals.",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#4285f4",
+    "icons": [
+        {
+            "src": "https://i.ibb.co/TBHf2hy2/1743073205313.jpg",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "https://i.ibb.co/TBHf2hy2/1743073205313.jpg",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

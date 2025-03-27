@@ -1,0 +1,2499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>StudySmart Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+        <link rel="manifest" href="manifest.json">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4bb543;
+            --warning-color: #f8961e;
+            --danger-color: #f94144;
+            --card-bg-light: #ffffff;
+            --card-bg-dark: #2d3748;
+            --body-bg-light: #f5f7fa;
+            --body-bg-dark: #1a202c;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--body-bg-light);
+            color: var(--dark-color);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            background-color: var(--body-bg-dark);
+            color: var(--light-color);
+        }
+
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        .dark-mode .navbar-brand {
+            color: var(--accent-color);
+        }
+
+        .timer-display {
+            font-size: 4rem;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            color: var(--primary-color);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+
+        .dark-mode .timer-display {
+            color: var(--accent-color);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: none;
+            margin-bottom: 24px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: var(--card-bg-light);
+        }
+
+        .dark-mode .card {
+            background-color: var(--card-bg-dark);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode .card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            font-weight: 600;
+            background-color: rgba(67, 97, 238, 0.1);
+            border-bottom: none;
+            border-radius: 12px 12px 0 0 !important;
+            padding: 16px 20px;
+        }
+
+        .dark-mode .card-header {
+            background-color: rgba(67, 97, 238, 0.2);
+            color: var(--light-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+            border-color: var(--warning-color);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+
+        .badge-custom {
+            background-color: var(--primary-color);
+            font-weight: 500;
+            padding: 6px 10px;
+            border-radius: 8px;
+        }
+
+        .progress-custom {
+            height: 12px;
+            border-radius: 6px;
+        }
+
+        .progress-bar-custom {
+            background-color: var(--primary-color);
+            border-radius: 6px;
+        }
+
+        .tag-badge {
+            margin-right: 6px;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .subject-card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1 0 120px;
+            max-width: 150px;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            background-color: #4361ee20;
+            border: 1px solid #4361ee40;
+        }
+
+        .dark-mode .subject-card {
+            background-color: rgba(67, 97, 238, 0.1);
+            border-color: rgba(67, 97, 238, 0.3);
+        }
+
+        .subject-card:hover {
+            transform: scale(1.05);
+        }
+
+        .subject-card.active {
+            border: 2px solid var(--primary-color);
+            background-color: rgba(67, 97, 238, 0.2);
+        }
+
+        .dark-mode .subject-card.active {
+            border-color: var(--accent-color);
+            background-color: rgba(76, 201, 240, 0.2);
+        }
+
+        .badge-list img {
+            width: 60px;
+            height: 60px;
+            margin: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .badge-list img:hover {
+            transform: scale(1.1);
+        }
+
+        .session-tag-input {
+            position: relative;
+        }
+
+        .tag-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 0 0 4px 4px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .dark-mode .tag-suggestions {
+            background: var(--card-bg-dark);
+            border-color: #444;
+        }
+
+        .tag-suggestion-item {
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .tag-suggestion-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .dark-mode .tag-suggestion-item:hover {
+            background-color: #333;
+        }
+
+        .stats-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.1));
+        }
+
+        .dark-mode .stats-card {
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.2), rgba(76, 201, 240, 0.2));
+        }
+
+        .stats-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .dark-mode .stats-value {
+            color: var(--accent-color);
+        }
+
+        .stats-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .dark-mode .stats-label {
+            color: #a0aec0;
+        }
+
+        .pomodoro-btn {
+            width: 100%;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .pomodoro-active {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .break-active {
+            background-color: var(--warning-color);
+            border-color: var(--warning-color);
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .timer-controls .btn {
+            flex: 1;
+            max-width: 120px;
+        }
+
+        .subject-distribution-chart {
+            max-height: 300px;
+        }
+
+        .achievement-badge {
+            position: relative;
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+        }
+
+        .achievement-badge .badge-icon {
+            width: 70px;
+            height: 70px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: white;
+            margin: 0 auto 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .achievement-badge .badge-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .achievement-badge .badge-description {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .dark-mode .achievement-badge .badge-description {
+            color: #a0aec0;
+        }
+
+        .achievement-badge.locked {
+            opacity: 0.5;
+        }
+
+        .achievement-badge.locked .badge-icon {
+            background-color: #6c757d;
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.1);
+            background-color: var(--secondary-color);
+        }
+
+        .modal-content {
+            border-radius: 12px;
+        }
+
+        .dark-mode .modal-content {
+            background-color: var(--card-bg-dark);
+        }
+
+        .nav-tabs .nav-link {
+            color: var(--dark-color);
+            border: none;
+            padding: 12px 20px;
+            font-weight: 500;
+        }
+
+        .dark-mode .nav-tabs .nav-link {
+            color: var(--light-color);
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            background-color: transparent;
+        }
+
+        .dark-mode .nav-tabs .nav-link.active {
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+        }
+
+        .tab-content {
+            padding: 20px 0;
+        }
+
+        .subject-color-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .subject-edit-btn,
+        .subject-delete-btn {
+            padding: 2px 6px;
+            font-size: 0.8rem;
+            margin-left: 8px;
+        }
+
+        .session-history-row:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        .dark-mode .session-history-row:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .focus-mode .card:not(.timer-card),
+        .focus-mode .navbar,
+        .focus-mode #sessionHistory,
+        .focus-mode #achievementsSection {
+            display: none;
+        }
+
+        .focus-mode .timer-card {
+            max-width: 500px;
+            margin: 50px auto;
+        }
+
+        .focus-mode .timer-display {
+            font-size: 6rem;
+        }
+
+        .focus-notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1050;
+            display: none;
+        }
+
+        .dark-mode .focus-notification {
+            background-color: var(--accent-color);
+        }
+
+        .quick-start-menu {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            z-index: 1001;
+            width: 200px;
+        }
+
+        .dark-mode .quick-start-menu {
+            background-color: var(--card-bg-dark);
+        }
+
+        .quick-start-item {
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-start-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .dark-mode .quick-start-item:hover {
+            background-color: #333;
+        }
+
+        .achievement-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1050;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            max-width: 350px;
+            animation: slideIn 0.5s forwards;
+        }
+
+        .dark-mode .achievement-notification {
+            background-color: var(--card-bg-dark);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .timer-display {
+                font-size: 3rem;
+            }
+
+            .stats-value {
+                font-size: 2rem;
+            }
+
+            .timer-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .timer-controls .btn {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+
+        .quick-start-item {
+            color: #1a202c
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-journal-bookmark-fill me-2"></i>StudySmart
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#timer">Timer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#history">History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#achievements">Achievements</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="form-check form-switch me-3">
+                        <input class="form-check-input" type="checkbox" id="themeToggle">
+                        <label class="form-check-label" for="themeToggle">
+                            <i class="bi bi-moon-fill"></i>
+                        </label>
+                    </div>
+                    <button class="btn btn-outline-primary" id="focusModeBtn">
+                        <i class="bi bi-eye-fill me-1"></i> Focus Mode
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="app-container">
+        <!-- Focus Mode Notification -->
+        <div class="focus-notification" id="focusNotification">
+            Focus Mode Active - Press ESC to exit
+        </div>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard">
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <div class="stats-value" id="totalStudyTime">0</div>
+                        <div class="stats-label">Total Study Hours</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <div class="stats-value" id="weeklyStudyTime">0</div>
+                        <div class="stats-label">This Week</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <div class="stats-value" id="dailyStudyTime">0</div>
+                        <div class="stats-label">Today</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-card">
+                        <div class="stats-value" id="sessionsCompleted">0</div>
+                        <div class="stats-label">Sessions</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span>Weekly Progress</span>
+                            <button class="btn btn-sm btn-outline-primary" id="addSubjectBtnModal">
+                                <i class="bi bi-plus-lg"></i> Add Subject
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="weeklyProgressContainer"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header">Quick Actions</div>
+                        <div class="card-body">
+                            <button class="btn btn-primary pomodoro-btn" id="pomodoro25Btn">
+                                <i class="bi bi-alarm"></i> Pomodoro (25m)
+                            </button>
+                            <button class="btn btn-warning pomodoro-btn" id="pomodoro50Btn">
+                                <i class="bi bi-alarm"></i> Long Session (50m)
+                            </button>
+                            <button class="btn btn-success pomodoro-btn" id="quickBreakBtn">
+                                <i class="bi bi-cup-hot"></i> Quick Break (5m)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Study Distribution</div>
+                        <div class="card-body">
+                            <canvas id="subjectDistributionChart" class="subject-distribution-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">Daily Study Trend</div>
+                        <div class="card-body">
+                            <canvas id="dailyTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timer Section -->
+        <section id="timer" class="mt-5">
+            <div class="card timer-card">
+                <div class="card-header">Study Timer</div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <label class="form-label">Select Subject</label>
+                        <div class="subject-selector d-flex flex-wrap gap-2 mb-3" id="subjectSelector">
+                            <!-- Subjects will be added here as cards -->
+                        </div>
+                    </div>
+
+                    <div class="text-center timer-display mb-4" id="timerDisplay">25:00</div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Session Duration (minutes)</label>
+                        <input type="number" class="form-control" id="studyDuration" value="25" min="1">
+                    </div>
+
+                    <div class="mb-3 session-tag-input">
+                        <label class="form-label">Session Tags (comma separated)</label>
+                        <input type="text" class="form-control" id="sessionTag" placeholder="e.g. exam-prep, chapter-3">
+                        <div class="tag-suggestions" id="tagSuggestions"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Session Notes</label>
+                        <textarea class="form-control" id="sessionNotes" rows="2"
+                            placeholder="Optional notes about this session"></textarea>
+                    </div>
+
+                    <div class="timer-controls mb-3">
+                        <button class="btn btn-success" id="startTimerBtn">
+                            <i class="bi bi-play-fill"></i> Start
+                        </button>
+                        <button class="btn btn-warning" id="pauseTimerBtn" disabled>
+                            <i class="bi bi-pause-fill"></i> Pause
+                        </button>
+                        <button class="btn btn-danger" id="resetTimerBtn" disabled>
+                            <i class="bi bi-stop-fill"></i> Reset
+                        </button>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="autoStartBreak">
+                            <label class="form-check-label" for="autoStartBreak">Auto-start break</label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="playSounds" checked>
+                            <label class="form-check-label" for="playSounds">Play sounds</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Session History Section -->
+        <section id="history" class="mt-5">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Session History</span>
+                    <div>
+                        <button class="btn btn-sm btn-outline-primary me-2" id="exportHistoryBtn">
+                            <i class="bi bi-download"></i> Export
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" id="clearHistoryBtn">
+                            <i class="bi bi-trash"></i> Clear
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Subject</label>
+                            <select class="form-select" id="historyFilterSubject">
+                                <option value="">All Subjects</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Date Range</label>
+                            <select class="form-select" id="historyFilterDateRange">
+                                <option value="all">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="custom">Custom Range</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4" id="customDateRangeContainer" style="display: none;">
+                            <label class="form-label">Custom Range</label>
+                            <div class="input-group">
+                                <input type="date" class="form-control" id="historyFilterDateFrom">
+                                <input type="date" class="form-control" id="historyFilterDateTo">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="sessionHistoryTable">
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>Duration</th>
+                                    <th>Date</th>
+                                    <th>Tags</th>
+                                    <th>Notes</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sessionHistoryBody"></tbody>
+                        </table>
+                    </div>
+
+                    <nav aria-label="Session history pagination">
+                        <ul class="pagination justify-content-center" id="historyPagination">
+                            <!-- Pagination will be added here -->
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </section>
+
+        <!-- Achievements Section -->
+        <section id="achievements" class="mt-5">
+            <div class="card">
+                <div class="card-header">Achievements</div>
+                <div class="card-body">
+                    <ul class="nav nav-tabs" id="achievementsTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="badges-tab" data-bs-toggle="tab"
+                                data-bs-target="#badges" type="button">Badges</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="stats-tab" data-bs-toggle="tab" data-bs-target="#stats"
+                                type="button">Statistics</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="milestones-tab" data-bs-toggle="tab"
+                                data-bs-target="#milestones" type="button">Milestones</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="achievementsTabContent">
+                        <div class="tab-pane fade show active" id="badges" role="tabpanel">
+                            <div class="text-center" id="badgeContainer">
+                                <!-- Badges will be added here -->
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="stats" role="tabpanel">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Study Streaks</h5>
+                                    <div class="mb-4">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span>Current Streak</span>
+                                            <span id="currentStreak">0 days</span>
+                                        </div>
+                                        <div class="progress progress-custom">
+                                            <div class="progress-bar progress-bar-custom" id="streakProgress"
+                                                style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span>Longest Streak</span>
+                                            <span id="longestStreak">0 days</span>
+                                        </div>
+                                        <div class="progress progress-custom">
+                                            <div class="progress-bar progress-bar-custom" id="longestStreakProgress"
+                                                style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <canvas id="streakCalendarChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="milestones" role="tabpanel">
+                            <div class="row" id="milestonesContainer">
+                                <!-- Milestones will be added here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="floating-btn" id="quickStartBtn">
+        <i class="bi bi-lightning-charge-fill"></i>
+    </div>
+
+    <!-- Add Subject Modal -->
+    <div class="modal fade" id="addSubjectModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Subject</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Subject Name</label>
+                        <input type="text" class="form-control" id="subjectInput">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Weekly Goal (hours)</label>
+                        <input type="number" class="form-control" id="weeklyGoalInput" value="5">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Subject Color</label>
+                        <input type="color" class="form-control form-control-color" id="subjectColor" value="#4361ee">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Subject Icon</label>
+                        <select class="form-select" id="subjectIcon">
+                            <option value="bi-book">Book</option>
+                            <option value="bi-calculator">Math</option>
+                            <option value="bi-code-slash">Programming</option>
+                            <option value="bi-laptop">Computer</option>
+                            <option value="bi-file-earmark-text">Exam</option>
+                            <option value="bi-globe2">Language</option>
+
+                            <option value="bi-file-text">Literature</option>
+
+                            <option value="bi-gear">Engineering</option>
+                            <option value="bi-airplane-fill">Aviation</option>
+                            <option value="bi-bar-chart">Data Analysis (Excel)</option>
+
+
+                            <option value="bi-database">Data Mining and Warehouse</option>
+                            <option value="bi-terminal">Unix Operating System and Shell Programming</option>
+                            <option value="bi-code-slash">Python Programming</option>
+                            <option value="bi-palette">Usability Design for Software Application</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveSubjectBtn">Save Subject</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Session Details Modal -->
+    <div class="modal fade" id="sessionDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Session Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="sessionDetailsContent">
+                    <!-- Session details will be loaded here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="deleteSessionBtn">Delete Session</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.0.1/build/global/luxon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.2.0/dist/chartjs-adapter-luxon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    // Replace the workerScript in your HTML with this updated version
+    <script id="workerScript" type="javascript/worker">
+    // Timer worker script with improved accuracy
+    let targetTime = 0;
+    let timerInterval;
+    let remainingTime = 0;
+    let expected;
+    
+    function step(timestamp) {
+        if (remainingTime <= 0) {
+            clearInterval(timerInterval);
+            self.postMessage({ 
+                completed: true,
+                isRunning: false
+            });
+            return;
+        }
+        
+        const now = Date.now();
+        const drift = now - expected;
+        
+        // Calculate remaining time based on target time
+        remainingTime = Math.max(0, Math.floor((targetTime - now) / 1000));
+        
+        self.postMessage({ 
+            timeLeft: remainingTime,
+            isRunning: true
+        });
+        
+        expected += 1000;
+        
+        // Adjust for drift
+        if (drift > 1000) {
+            // If we're more than a second behind, skip ahead
+            expected = now;
+        }
+    }
+    
+    self.onmessage = function(e) {
+        if (e.data.command === 'start') {
+            remainingTime = e.data.duration;
+            targetTime = Date.now() + (remainingTime * 1000);
+            expected = Date.now() + 1000;
+            
+            clearInterval(timerInterval);
+            
+            // Use requestAnimationFrame timing for better accuracy
+            timerInterval = setInterval(() => {
+                step(Date.now());
+            }, 1000);
+            
+            // Send initial state
+            self.postMessage({ 
+                timeLeft: remainingTime,
+                isRunning: true
+            });
+        } 
+        else if (e.data.command === 'pause') {
+            clearInterval(timerInterval);
+            // Update target time with remaining time
+            targetTime = Date.now() + (remainingTime * 1000);
+            self.postMessage({ 
+                isRunning: false 
+            });
+        } 
+        else if (e.data.command === 'reset') {
+            clearInterval(timerInterval);
+            remainingTime = 0;
+            targetTime = 0;
+            self.postMessage({ 
+                isRunning: false 
+            });
+        }
+        else if (e.data.command === 'getState') {
+            self.postMessage({
+                timeLeft: remainingTime,
+                isRunning: timerInterval !== undefined
+            });
+        }
+    };
+    </script>
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAIHFiw9p3nMeJ0Agqnmn8rozBGiJVpeGg",
+            authDomain: "hbnotes-48e73.firebaseapp.com",
+            databaseURL: "https://hbnotes-48e73-default-rtdb.firebaseio.com",
+            projectId: "hbnotes-48e73",
+            storageBucket: "hbnotes-48e73.appspot.com",
+            messagingSenderId: "683683128751",
+            appId: "1:683683128751:web:93d1966f89455016bdfb5a"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        let audioContext;
+        let startBeep;
+        let endBeep;
+
+        // App State
+        const state = {
+            subjects: {},
+            sessions: {},
+            tags: [],
+            timer: null,
+            currentSession: null,
+            currentTimeLeft: 25 * 60, // Default to 25 minutes
+            isBreak: false,
+            currentStreak: 0,
+            longestStreak: 0,
+            achievements: {
+                badges: [
+                    { id: 'first_session', title: 'Getting Started', icon: 'bi-emoji-smile', description: 'Complete your first study session', earned: false },
+                    { id: 'five_sessions', title: 'Consistent Learner', icon: 'bi-star', description: 'Complete 5 study sessions', earned: false },
+                    { id: 'ten_hours', title: 'Dedicated Student', icon: 'bi-award', description: 'Study for 10 hours', earned: false },
+                    { id: 'daily_streak_3', title: '3-Day Streak', icon: 'bi-lightning', description: 'Study for 3 consecutive days', earned: false },
+                    { id: 'weekly_goal', title: 'Goal Achiever', icon: 'bi-check-circle', description: 'Reach a weekly study goal', earned: false },
+                    { id: 'subject_master', title: 'Subject Master', icon: 'bi-trophy', description: 'Study 20 hours in one subject', earned: false }
+                ],
+                milestones: [
+                    { hours: 10, title: 'Bronze Learner', description: 'Reach 10 total study hours' },
+                    { hours: 25, title: 'Silver Scholar', description: 'Reach 25 total study hours' },
+                    { hours: 50, title: 'Gold Academic', description: 'Reach 50 total study hours' },
+                    { hours: 100, title: 'Platinum Professor', description: 'Reach 100 total study hours' }
+                ]
+            },
+            pagination: {
+                currentPage: 1,
+                itemsPerPage: 10
+            },
+            selectedSubjectId: null
+        };
+        let timerWorker;
+
+        // Initialize the worker when the page loads
+        function initWorker() {
+            const blob = new Blob([document.getElementById('workerScript').textContent]);
+            const blobURL = window.URL.createObjectURL(blob);
+            timerWorker = new Worker(blobURL);
+
+            timerWorker.onmessage = function (e) {
+                if (e.data.timeLeft !== undefined) {
+                    state.currentTimeLeft = e.data.timeLeft;
+                    updateTimerDisplay();
+                }
+                if (e.data.completed) {
+                    completeSession();
+                }
+                if (e.data.isRunning !== undefined) {
+                    elements.startTimerBtn.disabled = e.data.isRunning;
+                    elements.pauseTimerBtn.disabled = !e.data.isRunning;
+                    elements.resetTimerBtn.disabled = !e.data.isRunning && state.currentTimeLeft <= 0;
+                }
+            };
+        }
+        // DOM Elements
+        const elements = {
+            timerDisplay: document.getElementById('timerDisplay'),
+            startTimerBtn: document.getElementById('startTimerBtn'),
+            pauseTimerBtn: document.getElementById('pauseTimerBtn'),
+            resetTimerBtn: document.getElementById('resetTimerBtn'),
+            studyDuration: document.getElementById('studyDuration'),
+            sessionTag: document.getElementById('sessionTag'),
+            sessionNotes: document.getElementById('sessionNotes'),
+            subjectSelector: document.getElementById('subjectSelector'),
+            weeklyProgressContainer: document.getElementById('weeklyProgressContainer'),
+            sessionHistoryBody: document.getElementById('sessionHistoryBody'),
+            historyFilterSubject: document.getElementById('historyFilterSubject'),
+            historyFilterDateRange: document.getElementById('historyFilterDateRange'),
+            historyFilterDateFrom: document.getElementById('historyFilterDateFrom'),
+            historyFilterDateTo: document.getElementById('historyFilterDateTo'),
+            customDateRangeContainer: document.getElementById('customDateRangeContainer'),
+            historyPagination: document.getElementById('historyPagination'),
+            badgeContainer: document.getElementById('badgeContainer'),
+            milestonesContainer: document.getElementById('milestonesContainer'),
+            totalStudyTime: document.getElementById('totalStudyTime'),
+            weeklyStudyTime: document.getElementById('weeklyStudyTime'),
+            dailyStudyTime: document.getElementById('dailyStudyTime'),
+            sessionsCompleted: document.getElementById('sessionsCompleted'),
+            currentStreak: document.getElementById('currentStreak'),
+            longestStreak: document.getElementById('longestStreak'),
+            streakProgress: document.getElementById('streakProgress'),
+            longestStreakProgress: document.getElementById('longestStreakProgress'),
+            quickStartBtn: document.getElementById('quickStartBtn'),
+            focusModeBtn: document.getElementById('focusModeBtn'),
+            focusNotification: document.getElementById('focusNotification'),
+            addSubjectBtnModal: document.getElementById('addSubjectBtnModal'),
+            saveSubjectBtn: document.getElementById('saveSubjectBtn'),
+            exportHistoryBtn: document.getElementById('exportHistoryBtn'),
+            clearHistoryBtn: document.getElementById('clearHistoryBtn'),
+            pomodoro25Btn: document.getElementById('pomodoro25Btn'),
+            pomodoro50Btn: document.getElementById('pomodoro50Btn'),
+            quickBreakBtn: document.getElementById('quickBreakBtn'),
+            tagSuggestions: document.getElementById('tagSuggestions'),
+            themeToggle: document.getElementById('themeToggle'),
+            autoStartBreak: document.getElementById('autoStartBreak'),
+            playSounds: document.getElementById('playSounds')
+        };
+
+        // Charts
+        const charts = {
+            subjectDistribution: null,
+            dailyTrend: null,
+            streakCalendar: null
+        };
+
+        let wakeLock = null;
+
+        async function requestWakeLock() {
+            try {
+                // Check if Wake Lock API is supported
+                if ('wakeLock' in navigator) {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                    console.log('Screen Wake Lock is active');
+
+                    // Handle when the wake lock is released (e.g., when tab becomes inactive)
+                    wakeLock.addEventListener('release', () => {
+                        console.log('Screen Wake Lock was released');
+                    });
+                }
+            } catch (err) {
+                console.error(`Error requesting wake lock: ${err.message}`);
+            }
+        }
+
+        function releaseWakeLock() {
+            if (wakeLock !== null) {
+                wakeLock.release().then(() => {
+                    wakeLock = null;
+                    console.log('Screen Wake Lock released');
+                });
+            }
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSubjects();
+            loadSessions();
+            setupEventListeners();
+            setupThemeToggle();
+            setupDateFilters();
+            updateTimerDisplay();
+            initWorker();
+
+            // Check worker state on page load
+            timerWorker.postMessage({ command: 'getState' });
+        });
+
+        function setupEventListeners() {
+            // Timer controls
+            elements.startTimerBtn.addEventListener('click', startTimer);
+            elements.pauseTimerBtn.addEventListener('click', pauseTimer);
+            elements.resetTimerBtn.addEventListener('click', resetTimer);
+
+            // Quick timer buttons
+            elements.pomodoro25Btn.addEventListener('click', () => {
+                setTimerDuration(25);
+                state.isBreak = false;
+            });
+            elements.pomodoro50Btn.addEventListener('click', () => {
+                setTimerDuration(50);
+                state.isBreak = false;
+            });
+            elements.quickBreakBtn.addEventListener('click', () => {
+                setTimerDuration(5);
+                state.isBreak = true;
+            });
+
+            // Subject management
+            elements.addSubjectBtnModal.addEventListener('click', () => {
+                new bootstrap.Modal(document.getElementById('addSubjectModal')).show();
+            });
+            elements.saveSubjectBtn.addEventListener('click', addSubject);
+
+            // History controls
+            elements.historyFilterSubject.addEventListener('change', () => renderSessionHistory());
+            elements.historyFilterDateRange.addEventListener('change', () => {
+                elements.customDateRangeContainer.style.display =
+                    elements.historyFilterDateRange.value === 'custom' ? 'block' : 'none';
+                renderSessionHistory();
+            });
+            elements.historyFilterDateFrom.addEventListener('change', () => renderSessionHistory());
+            elements.historyFilterDateTo.addEventListener('change', () => renderSessionHistory());
+            elements.exportHistoryBtn.addEventListener('click', exportHistory);
+            elements.clearHistoryBtn.addEventListener('click', clearHistory);
+
+            // Focus mode
+            elements.focusModeBtn.addEventListener('click', toggleFocusMode);
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && document.body.classList.contains('focus-mode')) {
+                    toggleFocusMode();
+                }
+            });
+
+            // Tag suggestions
+            elements.sessionTag.addEventListener('input', showTagSuggestions);
+            elements.sessionTag.addEventListener('focus', showTagSuggestions);
+            elements.sessionTag.addEventListener('blur', () => {
+                setTimeout(() => elements.tagSuggestions.style.display = 'none', 200);
+            });
+
+            // Quick start button
+            elements.quickStartBtn.addEventListener('click', showQuickStartMenu);
+
+            // Theme toggle
+            elements.themeToggle.addEventListener('change', toggleTheme);
+            document.addEventListener('touchmove', handleTouchMove, { passive: false });
+            document.addEventListener('contextmenu', preventDefault);
+            document.addEventListener('copy', preventDefault);
+            document.addEventListener('paste', preventDefault);
+            document.addEventListener('cut', preventDefault);
+            document.addEventListener('selectstart', preventDefault);
+            document.addEventListener('keydown', handleKeyDown);
+
+            setupZoomPrevention();
+        }
+
+
+        function handleTouchMove(event) {
+            if (event.scale !== 1) {
+                event.preventDefault();
+            }
+        }
+
+        function preventDefault(e) {
+            e.preventDefault();
+        }
+
+        function handleKeyDown(e) {
+            if ((e.ctrlKey || e.metaKey) &&
+                (e.key === '+' || e.key === '-' || e.key === '0' || e.key === '=')) {
+                e.preventDefault();
+            }
+        }
+
+        function setupZoomPrevention() {
+            // Prevent all touch-based zooming
+            document.addEventListener('touchstart', function (e) {
+                if (e.touches.length > 1) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            document.addEventListener('gesturestart', function (e) {
+                e.preventDefault();
+            });
+
+            document.addEventListener('gesturechange', function (e) {
+                e.preventDefault();
+            });
+
+            document.addEventListener('gestureend', function (e) {
+                e.preventDefault();
+            });
+
+            // Prevent mouse wheel zooming (including trackpad pinch zoom)
+            document.addEventListener('wheel', function (e) {
+                if (e.ctrlKey) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+
+            // Prevent keyboard zooming
+            document.addEventListener('keydown', function (e) {
+                if ((e.ctrlKey || e.metaKey) &&
+                    (e.key === '+' || e.key === '-' || e.key === '0' || e.key === '=')) {
+                    e.preventDefault();
+                }
+            });
+        }
+
+        function initAudio() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+                // Create start beep (short beep)
+                startBeep = createBeep(800, 0.2); // 800Hz, 0.2 seconds
+
+                // Create end beep (longer beep)
+                endBeep = createBeep(800, 4); // 600Hz, 2.5 seconds
+            } catch (e) {
+                console.error("Audio initialization failed:", e);
+            }
+        }
+
+        function createBeep(frequency, duration) {
+            return function () {
+                if (!audioContext) return;
+
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.type = "sine";
+                oscillator.frequency.value = frequency;
+                gainNode.gain.value = 0.5;
+
+                oscillator.start();
+                gainNode.gain.exponentialRampToValueAtTime(
+                    0.001,
+                    audioContext.currentTime + duration
+                );
+                oscillator.stop(audioContext.currentTime + duration);
+            };
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+
+            // Update charts if they exist
+            if (charts.subjectDistribution) {
+                charts.subjectDistribution.update();
+            }
+            if (charts.dailyTrend) {
+                charts.dailyTrend.update();
+            }
+        }
+
+        function setupThemeToggle() {
+            const savedTheme = localStorage.getItem('darkMode') === 'true';
+            if (savedTheme) {
+                document.body.classList.add('dark-mode');
+                elements.themeToggle.checked = true;
+            }
+        }
+
+        function setupDateFilters() {
+            const today = new Date().toISOString().split('T')[0];
+            elements.historyFilterDateFrom.value = today;
+            elements.historyFilterDateTo.value = today;
+        }
+
+        function showQuickStartMenu() {
+            // Remove any existing menu
+            const existingMenu = document.querySelector('.quick-start-menu');
+            if (existingMenu) existingMenu.remove();
+
+            // Create a dropdown menu
+            const menu = document.createElement('div');
+            menu.className = 'quick-start-menu';
+
+            // Add recent subjects
+            const recentSubjects = Object.entries(state.subjects)
+                .sort((a, b) => new Date(b[1].createdAt || 0) - new Date(a[1].createdAt || 0))
+                .slice(0, 3);
+
+            if (recentSubjects.length > 0) {
+                const title = document.createElement('div');
+                title.textContent = 'Quick Start:';
+                title.style.fontWeight = 'bold';
+                title.style.marginBottom = '8px';
+                menu.appendChild(title);
+
+                recentSubjects.forEach(([id, subject]) => {
+                    const item = document.createElement('div');
+                    item.className = 'quick-start-item';
+
+                    const color = document.createElement('div');
+                    color.style.width = '12px';
+                    color.style.height = '12px';
+                    color.style.borderRadius = '50%';
+                    color.style.backgroundColor = subject.color || '#4361ee';
+
+                    const name = document.createElement('span');
+                    name.textContent = subject.name;
+
+                    item.appendChild(color);
+                    item.appendChild(name);
+
+                    item.addEventListener('click', () => {
+                        selectSubject(id);
+                        setTimerDuration(25);
+                        state.isBreak = false;
+                        startTimer();
+                        menu.remove();
+                    });
+
+                    menu.appendChild(item);
+                });
+
+                // Add to DOM
+                elements.quickStartBtn.appendChild(menu);
+
+                // Close menu when clicking elsewhere
+                const closeMenu = (e) => {
+                    if (!menu.contains(e.target) && e.target !== elements.quickStartBtn) {
+                        menu.remove();
+                        document.removeEventListener('click', closeMenu);
+                    }
+                };
+
+                setTimeout(() => {
+                    document.addEventListener('click', closeMenu);
+                }, 100);
+            }
+        }
+
+        function loadSubjects() {
+            database.ref('subjects').on('value', (snapshot) => {
+                state.subjects = snapshot.val() || {};
+                renderSubjectSelector();
+                renderSubjectFilter();
+                updateProgressDashboard();
+            });
+        }
+
+        function loadSessions() {
+            database.ref('sessions').on('value', (snapshot) => {
+                state.sessions = snapshot.val() || {};
+                renderSessionHistory();
+                updateStats();
+                checkAchievements();
+                updateProgressDashboard();
+            });
+        }
+
+        function loadTags() {
+            const allTags = new Set();
+            Object.values(state.sessions).forEach(session => {
+                if (session.tags) {
+                    session.tags.split(',').forEach(tag => {
+                        allTags.add(tag.trim());
+                    });
+                }
+            });
+            state.tags = Array.from(allTags);
+        }
+
+        function addSubject() {
+            const name = document.getElementById('subjectInput').value.trim();
+            const weeklyGoal = parseFloat(document.getElementById('weeklyGoalInput').value);
+            const color = document.getElementById('subjectColor').value;
+            const icon = document.getElementById('subjectIcon').value;
+
+            if (name && weeklyGoal) {
+                const newSubjectRef = database.ref('subjects').push();
+                newSubjectRef.set({
+                    name,
+                    weeklyGoal,
+                    color,
+                    icon,
+                    createdAt: new Date().toISOString()
+                });
+
+                // Close modal and reset form
+                bootstrap.Modal.getInstance(document.getElementById('addSubjectModal')).hide();
+                document.getElementById('subjectInput').value = '';
+                document.getElementById('weeklyGoalInput').value = '5';
+            }
+        }
+
+        function renderSubjectSelector() {
+            elements.subjectSelector.innerHTML = '';
+
+            Object.entries(state.subjects).forEach(([id, subject]) => {
+                const subjectCard = document.createElement('div');
+                subjectCard.className = `subject-card ${state.selectedSubjectId === id ? 'active' : ''}`;
+                subjectCard.style.backgroundColor = subject.color ? `${subject.color}20` : '#4361ee20';
+                subjectCard.style.borderColor = subject.color ? `${subject.color}40` : '#4361ee40';
+
+                subjectCard.innerHTML = `
+                    <div style="font-size: 24px; margin-bottom: 8px;">
+                        <i class="bi ${subject.icon || 'bi-book'}"></i>
+                    </div>
+                    <div style="font-weight: 500; font-size: 0.9rem;">${subject.name}</div>
+                `;
+
+                subjectCard.addEventListener('click', () => selectSubject(id));
+
+                elements.subjectSelector.appendChild(subjectCard);
+            });
+        }
+
+        function selectSubject(subjectId) {
+            state.selectedSubjectId = subjectId;
+
+            // Update UI
+            document.querySelectorAll('.subject-card').forEach(card => {
+                card.classList.remove('active');
+            });
+
+            if (subjectId) {
+                const selectedCard = Array.from(document.querySelectorAll('.subject-card'))[
+                    Object.keys(state.subjects).indexOf(subjectId)
+                ];
+                if (selectedCard) {
+                    selectedCard.classList.add('active');
+                }
+            }
+        }
+
+        function renderSubjectFilter() {
+            elements.historyFilterSubject.innerHTML = '<option value="">All Subjects</option>';
+
+            Object.entries(state.subjects).forEach(([id, subject]) => {
+                const option = document.createElement('option');
+                option.value = id;
+                option.textContent = subject.name;
+                elements.historyFilterSubject.appendChild(option);
+            });
+        }
+
+        function startTimer() {
+    const duration = parseInt(elements.studyDuration.value) || 25;
+    const subjectId = state.selectedSubjectId;
+    
+    if (!subjectId && !state.isBreak) {
+        alert('Please select a subject');
+        return;
+    }
+    
+    // Set up timer
+    state.currentSession = {
+        subject: subjectId,
+        startTime: new Date().toISOString(),
+        duration: duration,
+        tags: elements.sessionTag.value,
+        notes: elements.sessionNotes.value,
+        isBreak: state.isBreak
+    };
+    
+    // Start countdown through worker
+    timerWorker.postMessage({ 
+        command: 'start', 
+        duration: duration * 60 
+    });
+    
+    // Update UI
+    elements.startTimerBtn.disabled = true;
+    elements.pauseTimerBtn.disabled = false;
+    elements.resetTimerBtn.disabled = false;
+    elements.studyDuration.disabled = true;
+    elements.sessionTag.disabled = true;
+    elements.sessionNotes.disabled = true;
+    
+    // Update timer display style
+    if (state.isBreak) {
+        elements.timerDisplay.style.color = 'var(--warning-color)';
+    } else {
+        elements.timerDisplay.style.color = 'var(--primary-color)';
+    }
+    
+    // Play start beep
+    if (elements.playSounds.checked) {
+        if (!audioContext) {
+            initAudio();
+        }
+        if (startBeep) startBeep();
+    }
+
+    requestWakeLock(); 
+}
+
+function pauseTimer() {
+    timerWorker.postMessage({ command: 'pause' });
+    elements.startTimerBtn.disabled = false;
+    elements.pauseTimerBtn.disabled = true;
+    elements.studyDuration.disabled = false;
+    elements.sessionTag.disabled = false;
+    elements.sessionNotes.disabled = false;
+    releaseWakeLock();
+}
+
+function resetTimer() {
+    timerWorker.postMessage({ command: 'reset' });
+    state.currentTimeLeft = (parseInt(elements.studyDuration.value) || 25) * 60;
+    updateTimerDisplay();
+    elements.startTimerBtn.disabled = false;
+    elements.pauseTimerBtn.disabled = true;
+    elements.resetTimerBtn.disabled = true;
+    elements.studyDuration.disabled = false;
+    elements.sessionTag.disabled = false;
+    elements.sessionNotes.disabled = false;
+    state.currentSession = null;
+    state.isBreak = false;
+    elements.timerDisplay.style.color = 'var(--primary-color)';
+    releaseWakeLock();
+}
+
+        function updateTimerDisplay() {
+            const hours = Math.floor(state.currentTimeLeft / 3600);
+            const minutes = Math.floor((state.currentTimeLeft % 3600) / 60);
+            const seconds = state.currentTimeLeft % 60;
+
+            elements.timerDisplay.textContent =
+                `${hours > 0 ? hours.toString().padStart(2, '0') + ':' : ''}${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function setTimerDuration(minutes) {
+            elements.studyDuration.value = minutes;
+            state.currentTimeLeft = minutes * 60;
+            updateTimerDisplay();
+        }
+
+        function completeSession() {
+            if (state.currentSession) {
+                state.currentSession.endTime = new Date().toISOString();
+                const sessionRef = database.ref('sessions').push();
+                sessionRef.set(state.currentSession);
+
+                // Check for achievements
+                checkAchievements();
+
+                // Start break if enabled
+                if (elements.autoStartBreak.checked && !state.isBreak) {
+                    state.isBreak = true;
+                    setTimerDuration(5);
+                    startTimer();
+                } else {
+                    resetTimer();
+                }
+            }
+
+            // Play end beep
+            if (elements.playSounds.checked) {
+                if (endBeep) endBeep();
+            }
+            releaseWakeLock();
+        }
+
+
+
+        // Call initAudio on first user interaction (required by browsers)
+        document.addEventListener('click', function initOnInteraction() {
+            if (!audioContext) {
+                initAudio();
+            }
+            document.removeEventListener('click', initOnInteraction);
+        }, { once: true });
+
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible' && state.timer !== null) {
+                // If page becomes visible and timer is running, reacquire wake lock
+                requestWakeLock();
+            } else {
+                // If page becomes hidden, release wake lock to save power
+                releaseWakeLock();
+            }
+        });
+
+
+        function renderSessionHistory() {
+            loadTags();
+            const filteredSessions = filterSessions();
+            const paginatedSessions = paginateSessions(filteredSessions);
+
+            elements.sessionHistoryBody.innerHTML = '';
+
+            paginatedSessions.forEach(([id, session]) => {
+                const subject = state.subjects[session.subject] || { name: 'Unknown' };
+                const tr = document.createElement('tr');
+                tr.className = 'session-history-row';
+
+                const tags = session.tags ?
+                    session.tags.split(',').map(tag =>
+                        `<span class="badge tag-badge">${tag.trim()}</span>`
+                    ).join('') : '-';
+
+                tr.innerHTML = `
+                    <td>
+                        <span class="subject-color-indicator" style="background-color: ${subject.color || '#4361ee'}"></span>
+                        ${subject.name}
+                    </td>
+                    <td>${session.duration} mins</td>
+                    <td>${new Date(session.startTime).toLocaleString()}</td>
+                    <td>${tags}</td>
+                    <td>${session.notes ? session.notes.substring(0, 30) + (session.notes.length > 30 ? '...' : '') : '-'}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary view-session-btn" data-session-id="${id}">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </td>
+                `;
+
+                elements.sessionHistoryBody.appendChild(tr);
+            });
+
+            renderPagination(filteredSessions.length);
+
+            // Add event listeners to view buttons
+            document.querySelectorAll('.view-session-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const sessionId = e.currentTarget.getAttribute('data-session-id');
+                    showSessionDetails(sessionId);
+                });
+            });
+        }
+
+        function filterSessions() {
+            const subjectFilter = elements.historyFilterSubject.value;
+            const dateRange = elements.historyFilterDateRange.value;
+
+            let filtered = Object.entries(state.sessions);
+
+            // Filter by subject
+            if (subjectFilter) {
+                filtered = filtered.filter(([id, session]) => session.subject === subjectFilter);
+            }
+
+            // Filter by date range
+            const now = new Date();
+
+            if (dateRange === 'today') {
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                filtered = filtered.filter(([id, session]) => new Date(session.startTime) >= today);
+            } else if (dateRange === 'week') {
+                const weekAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
+                filtered = filtered.filter(([id, session]) => new Date(session.startTime) >= weekAgo);
+            } else if (dateRange === 'month') {
+                const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+                filtered = filtered.filter(([id, session]) => new Date(session.startTime) >= monthAgo);
+            } else if (dateRange === 'custom') {
+                const fromDate = new Date(elements.historyFilterDateFrom.value);
+                const toDate = new Date(elements.historyFilterDateTo.value);
+                toDate.setDate(toDate.getDate() + 1); // Include the entire end date
+
+                filtered = filtered.filter(([id, session]) => {
+                    const sessionDate = new Date(session.startTime);
+                    return sessionDate >= fromDate && sessionDate <= toDate;
+                });
+            }
+
+            // Sort by date (newest first)
+            return filtered.sort((a, b) => new Date(b[1].startTime) - new Date(a[1].startTime));
+        }
+
+        function paginateSessions(sessions) {
+            const startIndex = (state.pagination.currentPage - 1) * state.pagination.itemsPerPage;
+            return sessions.slice(startIndex, startIndex + state.pagination.itemsPerPage);
+        }
+
+        function renderPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / state.pagination.itemsPerPage);
+            elements.historyPagination.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            // Previous button
+            const prevLi = document.createElement('li');
+            prevLi.className = `page-item ${state.pagination.currentPage === 1 ? 'disabled' : ''}`;
+            prevLi.innerHTML = `<a class="page-link" href="#">Previous</a>`;
+            prevLi.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (state.pagination.currentPage > 1) {
+                    state.pagination.currentPage--;
+                    renderSessionHistory();
+                }
+            });
+            elements.historyPagination.appendChild(prevLi);
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const pageLi = document.createElement('li');
+                pageLi.className = `page-item ${state.pagination.currentPage === i ? 'active' : ''}`;
+                pageLi.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                pageLi.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    state.pagination.currentPage = i;
+                    renderSessionHistory();
+                });
+                elements.historyPagination.appendChild(pageLi);
+            }
+
+            // Next button
+            const nextLi = document.createElement('li');
+            nextLi.className = `page-item ${state.pagination.currentPage === totalPages ? 'disabled' : ''}`;
+            nextLi.innerHTML = `<a class="page-link" href="#">Next</a>`;
+            nextLi.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (state.pagination.currentPage < totalPages) {
+                    state.pagination.currentPage++;
+                    renderSessionHistory();
+                }
+            });
+            elements.historyPagination.appendChild(nextLi);
+        }
+
+        // Disable zooming through touch gestures and pinch-zoom
+        document.addEventListener('touchmove', function (event) {
+            if (event.scale !== 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        // Disable right-click context menu
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
+
+        // Disable copy-paste
+        document.addEventListener('copy', function (e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('paste', function (e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('cut', function (e) {
+            e.preventDefault();
+        });
+
+        // Disable text selection (optional)
+        document.addEventListener('selectstart', function (e) {
+            e.preventDefault();
+        });
+
+        // Disable keyboard shortcuts for zooming
+        document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) &&
+                (e.key === '+' || e.key === '-' || e.key === '0' || e.key === '=')) {
+                e.preventDefault();
+            }
+        });
+
+
+        function showSessionDetails(sessionId) {
+            const session = state.sessions[sessionId];
+            if (!session) return;
+
+            const subject = state.subjects[session.subject] || { name: 'Unknown' };
+            const modalContent = document.getElementById('sessionDetailsContent');
+
+            modalContent.innerHTML = `
+                <div class="mb-3">
+                    <h6>Subject</h6>
+                    <p>
+                        <span class="subject-color-indicator" style="background-color: ${subject.color || '#4361ee'}"></span>
+                        ${subject.name}
+                    </p>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6>Duration</h6>
+                        <p>${session.duration} minutes</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Date</h6>
+                        <p>${new Date(session.startTime).toLocaleString()}</p>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <h6>Tags</h6>
+                    <p>${session.tags ? session.tags.split(',').map(tag =>
+                `<span class="badge tag-badge">${tag.trim()}</span>`
+            ).join('') : 'No tags'}</p>
+                </div>
+                
+                <div class="mb-3">
+                    <h6>Notes</h6>
+                    <p>${session.notes || 'No notes'}</p>
+                </div>
+            `;
+
+            // Set up delete button
+            document.getElementById('deleteSessionBtn').onclick = () => {
+                if (confirm('Are you sure you want to delete this session?')) {
+                    database.ref('sessions/' + sessionId).remove();
+                    bootstrap.Modal.getInstance(document.getElementById('sessionDetailsModal')).hide();
+                }
+            };
+
+            // Show modal
+            new bootstrap.Modal(document.getElementById('sessionDetailsModal')).show();
+        }
+
+        function exportHistory() {
+            const filteredSessions = filterSessions();
+            let csv = 'Subject,Duration (mins),Date,Tags,Notes\n';
+
+            filteredSessions.forEach(([id, session]) => {
+                const subject = state.subjects[session.subject] || { name: 'Unknown' };
+                const tags = session.tags || '';
+                const notes = session.notes ? session.notes.replace(/"/g, '""') : '';
+
+                csv += `"${subject.name}",${session.duration},"${new Date(session.startTime).toLocaleString()}","${tags}","${notes}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `studysmart_history_${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function clearHistory() {
+            if (confirm('Are you sure you want to clear all session history? This cannot be undone.')) {
+                database.ref('sessions').remove();
+            }
+        }
+
+        function updateProgressDashboard() {
+            updateWeeklyProgress();
+            updateSubjectDistributionChart();
+            updateDailyTrendChart();
+        }
+
+        function updateWeeklyProgress() {
+            elements.weeklyProgressContainer.innerHTML = '';
+
+            Object.entries(state.subjects).forEach(([id, subject]) => {
+                const weekAgo = new Date();
+                weekAgo.setDate(weekAgo.getDate() - 7);
+
+                const weeklyStudyTime = Object.values(state.sessions)
+                    .filter(session =>
+                        session.subject === id &&
+                        new Date(session.startTime) >= weekAgo &&
+                        !session.isBreak
+                    )
+                    .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+
+                const progressPercentage = Math.min((weeklyStudyTime / subject.weeklyGoal) * 100, 100);
+
+                const progressDiv = document.createElement('div');
+                progressDiv.className = 'mb-3';
+                progressDiv.innerHTML = `
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>
+                            <span class="subject-color-indicator" style="background-color: ${subject.color || '#4361ee'}"></span>
+                            ${subject.name}
+                        </span>
+                        <span>${weeklyStudyTime.toFixed(1)}/${subject.weeklyGoal} hrs</span>
+                    </div>
+                    <div class="progress progress-custom">
+                        <div class="progress-bar progress-bar-custom" role="progressbar" 
+                            style="width: ${progressPercentage}%" 
+                            aria-valuenow="${progressPercentage}" 
+                            aria-valuemin="0" 
+                            aria-valuemax="100">
+                            ${progressPercentage.toFixed(0)}%
+                        </div>
+                    </div>
+                `;
+                elements.weeklyProgressContainer.appendChild(progressDiv);
+            });
+        }
+
+        function updateSubjectDistributionChart() {
+            const subjectStudyTime = {};
+
+            Object.values(state.sessions).forEach(session => {
+                if (session.isBreak) return;
+                const duration = parseFloat(session.duration) / 60;
+                subjectStudyTime[session.subject] =
+                    (subjectStudyTime[session.subject] || 0) + duration;
+            });
+
+            const labels = [];
+            const data = [];
+            const backgroundColors = [];
+
+            Object.entries(subjectStudyTime).forEach(([subjectId, hours]) => {
+                const subject = state.subjects[subjectId];
+                if (subject) {
+                    labels.push(subject.name);
+                    data.push(hours);
+                    backgroundColors.push(subject.color || '#4361ee');
+                }
+            });
+
+            const chartCtx = document.getElementById('subjectDistributionChart');
+
+            if (charts.subjectDistribution) {
+                charts.subjectDistribution.data.labels = labels;
+                charts.subjectDistribution.data.datasets[0].data = data;
+                charts.subjectDistribution.data.datasets[0].backgroundColor = backgroundColors;
+                charts.subjectDistribution.update();
+            } else {
+                charts.subjectDistribution = new Chart(chartCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: backgroundColors,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: {
+                                    color: document.body.classList.contains('dark-mode') ? '#fff' : '#666'
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return `${context.label}: ${context.raw.toFixed(1)} hours`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function updateDailyTrendChart() {
+            const dailyStudyTime = {};
+            const now = new Date();
+            const monthAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 30);
+
+            // Initialize with empty data for last 30 days
+            for (let i = 0; i <= 30; i++) {
+                const date = new Date(monthAgo);
+                date.setDate(date.getDate() + i);
+                const dateStr = date.toISOString().split('T')[0];
+                dailyStudyTime[dateStr] = 0;
+            }
+
+            // Populate with actual data
+            Object.values(state.sessions).forEach(session => {
+                if (session.isBreak) return;
+                const date = new Date(session.startTime).toISOString().split('T')[0];
+                const duration = parseFloat(session.duration) / 60;
+
+                if (dailyStudyTime.hasOwnProperty(date)) {
+                    dailyStudyTime[date] += duration;
+                }
+            });
+
+            const labels = Object.keys(dailyStudyTime).map(date =>
+                new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+            );
+            const data = Object.values(dailyStudyTime);
+
+            const chartCtx = document.getElementById('dailyTrendChart');
+            const textColor = document.body.classList.contains('dark-mode') ? '#fff' : '#666';
+
+            if (charts.dailyTrend) {
+                charts.dailyTrend.data.labels = labels;
+                charts.dailyTrend.data.datasets[0].data = data;
+                charts.dailyTrend.options.scales.x.ticks.color = textColor;
+                charts.dailyTrend.options.scales.y.ticks.color = textColor;
+                charts.dailyTrend.update();
+            } else {
+                charts.dailyTrend = new Chart(chartCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Study Hours',
+                            data: data,
+                            backgroundColor: 'rgba(67, 97, 238, 0.7)',
+                            borderColor: 'rgba(67, 97, 238, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Hours',
+                                    color: textColor
+                                },
+                                ticks: {
+                                    color: textColor
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Date',
+                                    color: textColor
+                                },
+                                ticks: {
+                                    color: textColor
+                                }
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        return `${context.raw.toFixed(1)} hours`;
+                                    }
+                                }
+                            },
+                            legend: {
+                                labels: {
+                                    color: textColor
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function updateStats() {
+            // Total study time
+            const totalHours = Object.values(state.sessions)
+                .filter(session => !session.isBreak)
+                .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+            elements.totalStudyTime.textContent = totalHours.toFixed(1);
+
+            // Weekly study time
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            const weeklyHours = Object.values(state.sessions)
+                .filter(session =>
+                    new Date(session.startTime) >= weekAgo &&
+                    !session.isBreak
+                )
+                .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+            elements.weeklyStudyTime.textContent = weeklyHours.toFixed(1);
+
+            // Daily study time
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const dailyHours = Object.values(state.sessions)
+                .filter(session =>
+                    new Date(session.startTime) >= today &&
+                    !session.isBreak
+                )
+                .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+            elements.dailyStudyTime.textContent = dailyHours.toFixed(1);
+
+            // Sessions completed
+            const sessionsCount = Object.values(state.sessions)
+                .filter(session => !session.isBreak)
+                .length;
+            elements.sessionsCompleted.textContent = sessionsCount;
+
+            // Calculate streaks
+            calculateStreaks();
+        }
+
+        function calculateStreaks() {
+            // Get all study dates (without breaks)
+            const studyDates = Object.values(state.sessions)
+                .filter(session => !session.isBreak)
+                .map(session => new Date(session.startTime).toISOString().split('T')[0]);
+
+            const uniqueDates = [...new Set(studyDates)].sort();
+
+            let currentStreak = 0;
+            let longestStreak = 0;
+            let tempStreak = 0;
+
+            // Check if today has a session
+            const today = new Date().toISOString().split('T')[0];
+            const hasToday = uniqueDates.includes(today);
+
+            // Calculate streaks
+            let prevDate = null;
+            for (const dateStr of uniqueDates) {
+                const date = new Date(dateStr);
+
+                if (prevDate) {
+                    const diffDays = Math.floor((date - prevDate) / (1000 * 60 * 60 * 24));
+
+                    if (diffDays === 1) {
+                        tempStreak++;
+                    } else if (diffDays > 1) {
+                        longestStreak = Math.max(longestStreak, tempStreak);
+                        tempStreak = 0;
+                    }
+                } else {
+                    tempStreak = 1;
+                }
+
+                prevDate = date;
+            }
+
+            longestStreak = Math.max(longestStreak, tempStreak);
+
+            // Current streak logic
+            if (uniqueDates.length > 0) {
+                const lastDate = new Date(uniqueDates[uniqueDates.length - 1]);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                const diffDays = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+
+                if (diffDays === 0) {
+                    // Studied today
+                    currentStreak = tempStreak;
+                } else if (diffDays === 1) {
+                    // Studied yesterday
+                    currentStreak = tempStreak;
+                } else {
+                    // Gap of more than 1 day, streak is broken
+                    currentStreak = 0;
+                }
+            }
+
+            state.currentStreak = currentStreak;
+            state.longestStreak = longestStreak;
+
+            // Update UI
+            elements.currentStreak.textContent = `${currentStreak} day${currentStreak !== 1 ? 's' : ''}`;
+            elements.longestStreak.textContent = `${longestStreak} day${longestStreak !== 1 ? 's' : ''}`;
+
+            // Update progress bars (cap at 30 days for visualization)
+            elements.streakProgress.style.width = `${Math.min(currentStreak / 30 * 100, 100)}%`;
+            elements.longestStreakProgress.style.width = `${Math.min(longestStreak / 30 * 100, 100)}%`;
+        }
+
+        function checkAchievements() {
+            const totalHours = Object.values(state.sessions)
+                .filter(session => !session.isBreak)
+                .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+
+            const sessionsCount = Object.values(state.sessions)
+                .filter(session => !session.isBreak)
+                .length;
+
+            // Check badge achievements
+            state.achievements.badges.forEach(badge => {
+                if (!badge.earned) {
+                    let earned = false;
+
+                    switch (badge.id) {
+                        case 'first_session':
+                            earned = sessionsCount >= 1;
+                            break;
+                        case 'five_sessions':
+                            earned = sessionsCount >= 5;
+                            break;
+                        case 'ten_hours':
+                            earned = totalHours >= 10;
+                            break;
+                        case 'daily_streak_3':
+                            earned = state.currentStreak >= 3;
+                            break;
+                        case 'weekly_goal':
+                            // Check if any subject reached its weekly goal
+                            earned = Object.entries(state.subjects).some(([id, subject]) => {
+                                const weekAgo = new Date();
+                                weekAgo.setDate(weekAgo.getDate() - 7);
+
+                                const weeklyStudyTime = Object.values(state.sessions)
+                                    .filter(session =>
+                                        session.subject === id &&
+                                        new Date(session.startTime) >= weekAgo &&
+                                        !session.isBreak
+                                    )
+                                    .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+
+                                return weeklyStudyTime >= subject.weeklyGoal;
+                            });
+                            break;
+                        case 'subject_master':
+                            // Check if any subject has 20+ hours
+                            earned = Object.entries(state.subjects).some(([id, subject]) => {
+                                const subjectHours = Object.values(state.sessions)
+                                    .filter(session =>
+                                        session.subject === id &&
+                                        !session.isBreak
+                                    )
+                                    .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+
+                                return subjectHours >= 20;
+                            });
+                            break;
+                    }
+
+                    if (earned && !badge.earned) {
+                        badge.earned = true;
+                        showAchievementNotification(badge);
+                    }
+                }
+            });
+
+            renderAchievements();
+        }
+
+        function renderAchievements() {
+            // Render badges
+            elements.badgeContainer.innerHTML = '';
+
+            state.achievements.badges.forEach(badge => {
+                const badgeEl = document.createElement('div');
+                badgeEl.className = `achievement-badge ${badge.earned ? '' : 'locked'}`;
+
+                badgeEl.innerHTML = `
+                    <div class="badge-icon">
+                        <i class="bi ${badge.icon}"></i>
+                    </div>
+                    <div class="badge-title">${badge.title}</div>
+                    <div class="badge-description">${badge.description}</div>
+                `;
+
+                if (badge.earned) {
+                    badgeEl.addEventListener('mouseenter', () => {
+                        badgeEl.style.transform = 'scale(1.1)';
+                    });
+                    badgeEl.addEventListener('mouseleave', () => {
+                        badgeEl.style.transform = 'scale(1)';
+                    });
+                }
+
+                elements.badgeContainer.appendChild(badgeEl);
+            });
+
+            // Render milestones
+            elements.milestonesContainer.innerHTML = '';
+
+            const totalHours = Object.values(state.sessions)
+                .filter(session => !session.isBreak)
+                .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+
+            state.achievements.milestones.forEach(milestone => {
+                const progress = Math.min((totalHours / milestone.hours) * 100, 100);
+                const achieved = totalHours >= milestone.hours;
+
+                const milestoneEl = document.createElement('div');
+                milestoneEl.className = 'col-md-6 mb-3';
+
+                milestoneEl.innerHTML = `
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">${milestone.title}</h5>
+                            <p class="card-text">${milestone.description}</p>
+                            <div class="progress progress-custom mb-2">
+                                <div class="progress-bar progress-bar-custom" 
+                                    style="width: ${progress}%">
+                                    ${progress.toFixed(0)}%
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <small>${totalHours.toFixed(1)}/${milestone.hours} hours</small>
+                                ${achieved ? '<span class="badge bg-success">Achieved!</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                elements.milestonesContainer.appendChild(milestoneEl);
+            });
+        }
+
+        function showAchievementNotification(badge) {
+            const notification = document.createElement('div');
+            notification.className = 'achievement-notification';
+
+            notification.innerHTML = `
+                <div style="font-size: 30px; color: gold;">
+                    <i class="bi ${badge.icon}"></i>
+                </div>
+                <div>
+                    <h5 style="margin: 0;">Achievement Unlocked!</h5>
+                    <p style="margin: 5px 0 0; font-size: 0.9rem;">${badge.title}: ${badge.description}</p>
+                </div>
+            `;
+
+            document.body.appendChild(notification);
+
+            // Fire confetti
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.5s forwards';
+                setTimeout(() => notification.remove(), 500);
+            }, 5000);
+        }
+
+        function showTagSuggestions() {
+            const input = elements.sessionTag.value.toLowerCase();
+            elements.tagSuggestions.innerHTML = '';
+
+            if (input.length === 0) {
+                elements.tagSuggestions.style.display = 'none';
+                return;
+            }
+
+            const matchingTags = state.tags.filter(tag =>
+                tag.toLowerCase().includes(input) &&
+                !elements.sessionTag.value.split(',').map(t => t.trim()).includes(tag)
+            );
+
+            if (matchingTags.length === 0) {
+                elements.tagSuggestions.style.display = 'none';
+                return;
+            }
+
+            matchingTags.slice(0, 5).forEach(tag => {
+                const item = document.createElement('div');
+                item.className = 'tag-suggestion-item';
+                item.textContent = tag;
+                item.addEventListener('click', () => {
+                    const currentTags = elements.sessionTag.value.split(',').map(t => t.trim()).filter(t => t);
+                    if (!currentTags.includes(tag)) {
+                        elements.sessionTag.value = currentTags.concat(tag).join(', ');
+                    }
+                    elements.tagSuggestions.style.display = 'none';
+                });
+                elements.tagSuggestions.appendChild(item);
+            });
+
+            elements.tagSuggestions.style.display = 'block';
+        }
+
+        function toggleFocusMode() {
+            document.body.classList.toggle('focus-mode');
+
+            if (document.body.classList.contains('focus-mode')) {
+                elements.focusNotification.style.display = 'block';
+                setTimeout(() => {
+                    elements.focusNotification.style.display = 'none';
+                }, 3000);
+
+                // Scroll to timer
+                document.getElementById('timer').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                // Scroll to top when exiting focus mode
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+    </script>
+     <script src="service-worker.js"></script>
+</body>
+
+</html>
