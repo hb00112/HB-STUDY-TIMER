@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-        <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.json">
     <style>
         :root {
             --primary-color: #4361ee;
@@ -25,6 +25,8 @@
             --card-bg-dark: #2d3748;
             --body-bg-light: #f5f7fa;
             --body-bg-dark: #1a202c;
+            --revision-color: #9d4edd;
+            --revision-secondary: #7b2cbf;
         }
 
         body {
@@ -69,6 +71,10 @@
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
+        .revision-mode .timer-display {
+            color: var(--revision-color);
+        }
+
         .card {
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -81,6 +87,10 @@
         .dark-mode .card {
             background-color: var(--card-bg-dark);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .revision-mode .card {
+            border-left: 4px solid var(--revision-color);
         }
 
         .card:hover {
@@ -103,6 +113,14 @@
         .dark-mode .card-header {
             background-color: rgba(67, 97, 238, 0.2);
             color: var(--light-color);
+        }
+
+        .revision-mode .card-header {
+            background-color: rgba(157, 78, 221, 0.1);
+        }
+
+        .dark-mode.revision-mode .card-header {
+            background-color: rgba(157, 78, 221, 0.2);
         }
 
         .btn-primary {
@@ -130,11 +148,27 @@
             border-color: var(--danger-color);
         }
 
+        .btn-revision {
+            background-color: var(--revision-color);
+            border-color: var(--revision-color);
+            color: white;
+        }
+
+        .btn-revision:hover {
+            background-color: var(--revision-secondary);
+            border-color: var(--revision-secondary);
+            color: white;
+        }
+
         .badge-custom {
             background-color: var(--primary-color);
             font-weight: 500;
             padding: 6px 10px;
             border-radius: 8px;
+        }
+
+        .badge-revision {
+            background-color: var(--revision-color);
         }
 
         .progress-custom {
@@ -147,12 +181,20 @@
             border-radius: 6px;
         }
 
+        .progress-bar-revision {
+            background-color: var(--revision-color);
+        }
+
         .tag-badge {
             margin-right: 6px;
             margin-bottom: 6px;
             font-size: 0.8rem;
             background-color: var(--accent-color);
             color: white;
+        }
+
+        .tag-badge-revision {
+            background-color: var(--revision-color);
         }
 
         .subject-card {
@@ -179,6 +221,11 @@
         .subject-card.active {
             border: 2px solid var(--primary-color);
             background-color: rgba(67, 97, 238, 0.2);
+        }
+
+        .subject-card.revision-active {
+            border: 2px solid var(--revision-color);
+            background-color: rgba(157, 78, 221, 0.2);
         }
 
         .dark-mode .subject-card.active {
@@ -240,14 +287,26 @@
             background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(76, 201, 240, 0.1));
         }
 
+        .revision-mode .stats-card {
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.1), rgba(123, 44, 191, 0.1));
+        }
+
         .dark-mode .stats-card {
             background: linear-gradient(135deg, rgba(67, 97, 238, 0.2), rgba(76, 201, 240, 0.2));
+        }
+
+        .dark-mode.revision-mode .stats-card {
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.2), rgba(123, 44, 191, 0.2));
         }
 
         .stats-value {
             font-size: 2.5rem;
             font-weight: 700;
             color: var(--primary-color);
+        }
+
+        .revision-mode .stats-value {
+            color: var(--revision-color);
         }
 
         .dark-mode .stats-value {
@@ -316,6 +375,10 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
+        .achievement-badge.revision-badge .badge-icon {
+            background-color: var(--revision-color);
+        }
+
         .achievement-badge .badge-title {
             font-size: 0.9rem;
             font-weight: 500;
@@ -357,9 +420,17 @@
             transition: all 0.3s ease;
         }
 
+        .revision-mode .floating-btn {
+            background-color: var(--revision-color);
+        }
+
         .floating-btn:hover {
             transform: scale(1.1);
             background-color: var(--secondary-color);
+        }
+
+        .revision-mode .floating-btn:hover {
+            background-color: var(--revision-secondary);
         }
 
         .modal-content {
@@ -385,6 +456,11 @@
             color: var(--primary-color);
             border-bottom: 3px solid var(--primary-color);
             background-color: transparent;
+        }
+
+        .nav-tabs .nav-link.revision-active {
+            color: var(--revision-color);
+            border-bottom: 3px solid var(--revision-color);
         }
 
         .dark-mode .nav-tabs .nav-link.active {
@@ -450,6 +526,10 @@
             display: none;
         }
 
+        .revision-mode .focus-notification {
+            background-color: var(--revision-color);
+        }
+
         .dark-mode .focus-notification {
             background-color: var(--accent-color);
         }
@@ -508,6 +588,154 @@
             background-color: var(--card-bg-dark);
         }
 
+       
+/* Add new toggle switch styles */
+
+/* Add these styles to your existing CSS */
+.revision-mode-switch {
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.revision-mode-switch .form-check-input {
+    display: none; /* Hide the default checkbox */
+}
+
+.revision-mode-switch .form-check-label {
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 0;
+    display: flex;
+    align-items: center;
+}
+
+.revision-mode-switch .form-check-input:checked + .form-check-label {
+    background-color: var(--revision-color);
+    color: white;
+    border-color: var(--revision-color);
+}
+
+.revision-mode-switch .form-check-input:not(:checked) + .form-check-label {
+    background-color: transparent;
+    color: var(--revision-color);
+    border: 1px solid var(--revision-color);
+}
+
+/* Dark mode adjustments */
+.dark-mode .revision-mode-switch .form-check-input:not(:checked) + .form-check-label {
+    color: var(--light-color);
+    border-color: var(--revision-color);
+}
+
+.revision-mode-switch .form-check-input {
+    height: 1.5em;
+    width: 3em;
+}
+
+.revision-mode-switch .form-check-input:checked {
+    background-color: var(--revision-color);
+    border-color: var(--revision-color);
+}
+
+.revision-mode-switch .form-check-label {
+    color: inherit;
+    transition: color 0.3s ease;
+}
+
+.revision-mode .revision-mode-switch .form-check-label {
+    color: var(--revision-color);
+}
+
+        .dark-mode .revision-toggle {
+            background-color: var(--card-bg-dark);
+        }
+
+        .revision-mode .revision-toggle {
+            background-color: var(--revision-color);
+            color: white;
+        }
+
+        .revision-mode-indicator {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--revision-color);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1050;
+            display: none;
+            font-weight: 500;
+        }
+
+        .revision-settings-btn {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--revision-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .revision-settings-btn:hover {
+            transform: scale(1.1);
+            background-color: var(--revision-secondary);
+        }
+
+        .revision-settings-menu {
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            z-index: 1001;
+            width: 250px;
+            display: none;
+        }
+
+        .dark-mode .revision-settings-menu {
+            background-color: var(--card-bg-dark);
+        }
+
+        .revision-settings-item {
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            cursor: pointer;
+        }
+
+        .revision-settings-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .dark-mode .revision-settings-item:hover {
+            background-color: #333;
+        }
+
+        .revision-day-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
         @keyframes slideIn {
             from {
                 transform: translateX(100%);
@@ -550,6 +778,13 @@
                 max-width: 100%;
                 width: 100%;
             }
+
+            .revision-toggle {
+                top: 80px;
+                right: 10px;
+                font-size: 0.9rem;
+                padding: 6px 10px;
+            }
         }
 
         .quick-start-item {
@@ -590,6 +825,14 @@
                             <i class="bi bi-moon-fill"></i>
                         </label>
                     </div>
+                    <!-- Add this new revision toggle switch -->
+                  <!-- Replace the existing revision toggle switch with this -->
+<div class="form-check form-switch me-3 revision-mode-switch">
+    <input class="form-check-input" type="checkbox" id="revisionModeSwitch">
+    <label class="form-check-label btn btn-outline-revision" for="revisionModeSwitch">
+        <i class="bi bi-arrow-repeat me-1"></i> Revision
+    </label>
+</div>
                     <button class="btn btn-outline-primary" id="focusModeBtn">
                         <i class="bi bi-eye-fill me-1"></i> Focus Mode
                     </button>
@@ -597,6 +840,42 @@
             </div>
         </div>
     </nav>
+
+    <!-- Revision Mode Toggle -->
+   
+
+    <!-- Revision Mode Indicator -->
+    <div class="revision-mode-indicator" id="revisionModeIndicator">
+        <i class="bi bi-arrow-repeat me-2"></i>Revision Mode Active
+    </div>
+
+    <!-- Revision Settings Button -->
+    <div class="revision-settings-btn" id="revisionSettingsBtn">
+        <i class="bi bi-gear-fill"></i>
+    </div>
+
+    <!-- Revision Settings Menu -->
+    <div class="revision-settings-menu" id="revisionSettingsMenu">
+        <h6>Revision Settings</h6>
+        <div class="mb-3">
+            <label class="form-label">Default Revision Day</label>
+            <div class="revision-day-toggle">
+                <span>Sunday</span>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="sundayRevisionToggle" checked disabled>
+                </div>
+            </div>
+            <div class="revision-day-toggle">
+                <span>Saturday</span>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="saturdayRevisionToggle">
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-sm btn-revision w-100" id="saveRevisionSettingsBtn">
+            Save Settings
+        </button>
+    </div>
 
     <div class="app-container">
         <!-- Focus Mode Notification -->
@@ -638,12 +917,18 @@
                     <div class="card mb-4">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <span>Weekly Progress</span>
-                            <button class="btn btn-sm btn-outline-primary" id="addSubjectBtnModal">
-                                <i class="bi bi-plus-lg"></i> Add Subject
-                            </button>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary me-2" id="addSubjectBtnModal">
+                                    <i class="bi bi-plus-lg"></i> Add Subject
+                                </button>
+                                <button class="btn btn-sm btn-outline-revision" id="revisionStatsToggle">
+                                    <i class="bi bi-arrow-repeat"></i> Show Revision Stats
+                                </button>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div id="weeklyProgressContainer"></div>
+                            <div id="weeklyRevisionProgressContainer" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
@@ -659,6 +944,9 @@
                             </button>
                             <button class="btn btn-success pomodoro-btn" id="quickBreakBtn">
                                 <i class="bi bi-cup-hot"></i> Quick Break (5m)
+                            </button>
+                            <button class="btn btn-revision pomodoro-btn" id="revisionSessionBtn">
+                                <i class="bi bi-arrow-repeat"></i> Revision Session (30m)
                             </button>
                         </div>
                     </div>
@@ -688,7 +976,10 @@
         <!-- Timer Section -->
         <section id="timer" class="mt-5">
             <div class="card timer-card">
-                <div class="card-header">Study Timer</div>
+                <div class="card-header">
+                    <span id="timerModeLabel">Study Timer</span>
+                    <span class="badge bg-revision ms-2" id="revisionBadge" style="display: none;">Revision</span>
+                </div>
                 <div class="card-body">
                     <div class="mb-4">
                         <label class="form-label">Select Subject</label>
@@ -748,6 +1039,14 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Session History</span>
                     <div>
+                        <div class="btn-group me-2">
+                            <button class="btn btn-sm btn-outline-primary" id="viewStudySessionsBtn">
+                                <i class="bi bi-book"></i> Study
+                            </button>
+                            <button class="btn btn-sm btn-outline-revision" id="viewRevisionSessionsBtn">
+                                <i class="bi bi-arrow-repeat"></i> Revision
+                            </button>
+                        </div>
                         <button class="btn btn-sm btn-outline-primary me-2" id="exportHistoryBtn">
                             <i class="bi bi-download"></i> Export
                         </button>
@@ -792,6 +1091,7 @@
                                     <th>Date</th>
                                     <th>Tags</th>
                                     <th>Notes</th>
+                                    <th>Type</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -893,7 +1193,7 @@
                         <input type="text" class="form-control" id="subjectInput">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Weekly Goal (hours)</label>
+                        <label class="form-label">Weekly Study Goal (hours)</label>
                         <input type="number" class="form-control" id="weeklyGoalInput" value="5">
                     </div>
                     <div class="mb-3">
@@ -909,29 +1209,33 @@
                             <option value="bi-laptop">Computer</option>
                             <option value="bi-file-earmark-text">Exam</option>
                             <option value="bi-globe2">Language</option>
-
                             <option value="bi-file-text">Literature</option>
-
                             <option value="bi-gear">Engineering</option>
                             <option value="bi-airplane-fill">Aviation</option>
                             <option value="bi-bar-chart">Data Analysis (Excel)</option>
-
-
                             <option value="bi-database">Data Mining and Warehouse</option>
                             <option value="bi-terminal">Unix Operating System and Shell Programming</option>
                             <option value="bi-code-slash">Python Programming</option>
                             <option value="bi-palette">Usability Design for Software Application</option>
                         </select>
                     </div>
+                    <div class="mb-3">
+                        <h6>Revision Settings</h6>
+                        <div class="mb-2">
+                            <label class="form-label">Weekly Revision Goal (hours)</label>
+                            <input type="number" class="form-control" id="weeklyRevisionGoalInput" value="1">
+                            <small class="text-muted">Recommended: 20% of study goal</small>
+                        </div>
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" id="sundayRevisionToggle" checked disabled>
+                            <label class="form-check-label" for="sundayRevisionToggle">Sunday Revision (always enabled)</label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="saturdayRevisionToggle">
+                            <label class="form-check-label" for="saturdayRevisionToggle">Include Saturday as Revision Day</label>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="saveSubjectBtn">Save Subject</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Session Details Modal -->
     <div class="modal fade" id="sessionDetailsModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
@@ -960,20 +1264,25 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-   
-    <script id="workerScript" type="javascript/worker">
+   <!-- In the worker script section -->
+<script id="workerScript" type="javascript/worker">
     // Timer worker script with improved accuracy
     let targetTime = 0;
     let timerInterval;
     let remainingTime = 0;
     let expected;
+    let elapsedTime = 0;
+    let lastStartTime = 0;
+    let isRunning = false;
     
     function step(timestamp) {
         if (remainingTime <= 0) {
             clearInterval(timerInterval);
+            isRunning = false;
             self.postMessage({ 
                 completed: true,
-                isRunning: false
+                isRunning: false,
+                elapsed: elapsedTime + (Date.now() - lastStartTime) / 1000
             });
             return;
         }
@@ -986,61 +1295,90 @@
         
         self.postMessage({ 
             timeLeft: remainingTime,
-            isRunning: true
+            isRunning: true,
+            elapsed: elapsedTime + (now - lastStartTime) / 1000
         });
         
         expected += 1000;
         
         // Adjust for drift
         if (drift > 1000) {
-            // If we're more than a second behind, skip ahead
             expected = now;
         }
     }
     
     self.onmessage = function(e) {
         if (e.data.command === 'start') {
-            remainingTime = e.data.duration;
-            targetTime = Date.now() + (remainingTime * 1000);
-            expected = Date.now() + 1000;
-            
-            clearInterval(timerInterval);
-            
-            // Use requestAnimationFrame timing for better accuracy
-            timerInterval = setInterval(() => {
-                step(Date.now());
-            }, 1000);
-            
-            // Send initial state
-            self.postMessage({ 
-                timeLeft: remainingTime,
-                isRunning: true
-            });
+            // If resuming from pause
+            if (e.data.resume && remainingTime > 0) {
+                targetTime = Date.now() + (remainingTime * 1000);
+                expected = Date.now() + 1000;
+                lastStartTime = Date.now();
+                
+                clearInterval(timerInterval);
+                timerInterval = setInterval(() => {
+                    step(Date.now());
+                }, 1000);
+                isRunning = true;
+                
+                self.postMessage({ 
+                    timeLeft: remainingTime,
+                    isRunning: true,
+                    elapsed: elapsedTime
+                });
+            } 
+            // If starting fresh
+            else {
+                remainingTime = e.data.duration;
+                targetTime = Date.now() + (remainingTime * 1000);
+                expected = Date.now() + 1000;
+                lastStartTime = Date.now();
+                elapsedTime = 0;
+                
+                clearInterval(timerInterval);
+                timerInterval = setInterval(() => {
+                    step(Date.now());
+                }, 1000);
+                isRunning = true;
+                
+                self.postMessage({ 
+                    timeLeft: remainingTime,
+                    isRunning: true,
+                    elapsed: 0
+                });
+            }
         } 
         else if (e.data.command === 'pause') {
+            elapsedTime += (Date.now() - lastStartTime) / 1000;
             clearInterval(timerInterval);
-            // Update target time with remaining time
-            targetTime = Date.now() + (remainingTime * 1000);
+            isRunning = false;
             self.postMessage({ 
-                isRunning: false 
+                isRunning: false,
+                elapsed: elapsedTime
             });
         } 
         else if (e.data.command === 'reset') {
+            const finalElapsed = elapsedTime + (Date.now() - lastStartTime) / 1000;
             clearInterval(timerInterval);
             remainingTime = 0;
             targetTime = 0;
+            elapsedTime = 0;
+            isRunning = false;
             self.postMessage({ 
-                isRunning: false 
+                isRunning: false,
+                elapsed: finalElapsed,
+                reset: true
             });
         }
         else if (e.data.command === 'getState') {
             self.postMessage({
                 timeLeft: remainingTime,
-                isRunning: timerInterval !== undefined
+                isRunning: isRunning,
+                elapsed: elapsedTime + (isRunning ? (Date.now() - lastStartTime) / 1000 : 0)
             });
         }
     };
-    </script>
+</script>
     <script>
         // Firebase Configuration
         const firebaseConfig = {
@@ -1064,13 +1402,20 @@
         const state = {
             subjects: {},
             sessions: {},
+            revisionSessions: {},
             tags: [],
             timer: null,
             currentSession: null,
             currentTimeLeft: 25 * 60, // Default to 25 minutes
             isBreak: false,
+            isRevision: false,
             currentStreak: 0,
             longestStreak: 0,
+            revisionSettings: {
+                sundayRevision: true,
+                saturdayRevision: false,
+                subjectSaturdayRevisions: {} // {subjectId: true/false}
+            },
             achievements: {
                 badges: [
                     { id: 'first_session', title: 'Getting Started', icon: 'bi-emoji-smile', description: 'Complete your first study session', earned: false },
@@ -1078,18 +1423,25 @@
                     { id: 'ten_hours', title: 'Dedicated Student', icon: 'bi-award', description: 'Study for 10 hours', earned: false },
                     { id: 'daily_streak_3', title: '3-Day Streak', icon: 'bi-lightning', description: 'Study for 3 consecutive days', earned: false },
                     { id: 'weekly_goal', title: 'Goal Achiever', icon: 'bi-check-circle', description: 'Reach a weekly study goal', earned: false },
-                    { id: 'subject_master', title: 'Subject Master', icon: 'bi-trophy', description: 'Study 20 hours in one subject', earned: false }
+                    { id: 'subject_master', title: 'Subject Master', icon: 'bi-trophy', description: 'Study 20 hours in one subject', earned: false },
+                    { id: 'first_revision', title: 'Revision Starter', icon: 'bi-arrow-repeat', description: 'Complete your first revision session', earned: false },
+                    { id: 'five_revisions', title: 'Revision Pro', icon: 'bi-arrow-clockwise', description: 'Complete 5 revision sessions', earned: false },
+                    { id: 'revision_master', title: 'Revision Master', icon: 'bi-arrow-repeat', description: 'Complete 20 revision sessions', earned: false }
                 ],
                 milestones: [
                     { hours: 10, title: 'Bronze Learner', description: 'Reach 10 total study hours' },
                     { hours: 25, title: 'Silver Scholar', description: 'Reach 25 total study hours' },
                     { hours: 50, title: 'Gold Academic', description: 'Reach 50 total study hours' },
-                    { hours: 100, title: 'Platinum Professor', description: 'Reach 100 total study hours' }
+                    { hours: 100, title: 'Platinum Professor', description: 'Reach 100 total study hours' },
+                    { hours: 10, revision: true, title: 'Bronze Reviewer', description: 'Reach 10 total revision hours' },
+                    { hours: 25, revision: true, title: 'Silver Reviewer', description: 'Reach 25 total revision hours' },
+                    { hours: 50, revision: true, title: 'Gold Reviewer', description: 'Reach 50 total revision hours' }
                 ]
             },
             pagination: {
                 currentPage: 1,
-                itemsPerPage: 10
+                itemsPerPage: 10,
+                viewMode: 'study' // 'study' or 'revision'
             },
             selectedSubjectId: null
         };
@@ -1097,25 +1449,70 @@
 
         // Initialize the worker when the page loads
         function initWorker() {
-            const blob = new Blob([document.getElementById('workerScript').textContent]);
-            const blobURL = window.URL.createObjectURL(blob);
-            timerWorker = new Worker(blobURL);
+            try {
+                // Check if worker is already initialized
+                if (timerWorker) return;
+                
+                const workerScriptElement = document.getElementById('workerScript');
+                if (!workerScriptElement) {
+                    console.error('Worker script element not found');
+                    return;
+                }
+                
+                const blob = new Blob([workerScriptElement.textContent], { type: 'application/javascript' });
+                const blobURL = URL.createObjectURL(blob);
+                timerWorker = new Worker(blobURL);
 
-            timerWorker.onmessage = function (e) {
-                if (e.data.timeLeft !== undefined) {
-                    state.currentTimeLeft = e.data.timeLeft;
-                    updateTimerDisplay();
-                }
-                if (e.data.completed) {
-                    completeSession();
-                }
-                if (e.data.isRunning !== undefined) {
-                    elements.startTimerBtn.disabled = e.data.isRunning;
-                    elements.pauseTimerBtn.disabled = !e.data.isRunning;
-                    elements.resetTimerBtn.disabled = !e.data.isRunning && state.currentTimeLeft <= 0;
-                }
-            };
+                timerWorker.onmessage = function (e) {
+                    if (e.data.timeLeft !== undefined) {
+                        state.currentTimeLeft = e.data.timeLeft;
+                        updateTimerDisplay();
+                        
+                        if (state.currentSession && e.data.elapsed) {
+                            state.currentSession.duration = Math.floor(e.data.elapsed / 60);
+                        }
+                    }
+                    if (e.data.completed) {
+                        completeSession();
+                    }
+                    if (e.data.reset && e.data.elapsed) {
+                        const elapsedMinutes = Math.floor(e.data.elapsed / 60);
+                        if (elapsedMinutes > 0 && state.currentSession) {
+                            state.currentSession.duration = elapsedMinutes;
+                            state.currentSession.endTime = new Date().toISOString();
+                            const sessionRef = state.isRevision 
+                                ? database.ref('revisionSessions').push()
+                                : database.ref('sessions').push();
+                            sessionRef.set(state.currentSession);
+                            checkAchievements();
+                        }
+                        
+                        // Reset UI
+                        state.currentTimeLeft = (parseInt(elements.studyDuration.value) || 25) * 60;
+                        updateTimerDisplay();
+                        elements.startTimerBtn.disabled = false;
+                        elements.pauseTimerBtn.disabled = true;
+                        elements.resetTimerBtn.disabled = true;
+                        elements.studyDuration.disabled = false;
+                        elements.sessionTag.disabled = false;
+                        elements.sessionNotes.disabled = false;
+                        state.currentSession = null;
+                        state.isBreak = false;
+                        elements.timerDisplay.style.color = state.isRevision ? 'var(--revision-color)' : 'var(--primary-color)';
+                        releaseWakeLock();
+                    }
+                    if (e.data.isRunning !== undefined) {
+                        elements.startTimerBtn.disabled = e.data.isRunning;
+                        elements.pauseTimerBtn.disabled = !e.data.isRunning;
+                        elements.resetTimerBtn.disabled = !e.data.isRunning && state.currentTimeLeft <= 0;
+                    }
+                };
+            } catch (error) {
+                console.error('Worker initialization failed:', error);
+                // Fallback to non-worker timer if needed
+            }
         }
+
         // DOM Elements
         const elements = {
             timerDisplay: document.getElementById('timerDisplay'),
@@ -1127,6 +1524,7 @@
             sessionNotes: document.getElementById('sessionNotes'),
             subjectSelector: document.getElementById('subjectSelector'),
             weeklyProgressContainer: document.getElementById('weeklyProgressContainer'),
+            weeklyRevisionProgressContainer: document.getElementById('weeklyRevisionProgressContainer'),
             sessionHistoryBody: document.getElementById('sessionHistoryBody'),
             historyFilterSubject: document.getElementById('historyFilterSubject'),
             historyFilterDateRange: document.getElementById('historyFilterDateRange'),
@@ -1154,10 +1552,25 @@
             pomodoro25Btn: document.getElementById('pomodoro25Btn'),
             pomodoro50Btn: document.getElementById('pomodoro50Btn'),
             quickBreakBtn: document.getElementById('quickBreakBtn'),
+            revisionSessionBtn: document.getElementById('revisionSessionBtn'),
             tagSuggestions: document.getElementById('tagSuggestions'),
             themeToggle: document.getElementById('themeToggle'),
             autoStartBreak: document.getElementById('autoStartBreak'),
-            playSounds: document.getElementById('playSounds')
+            playSounds: document.getElementById('playSounds'),
+            revisionToggle: document.getElementById('revisionToggle'),
+            revisionModeSwitch: document.getElementById('revisionModeSwitch'),
+            revisionModeIndicator: document.getElementById('revisionModeIndicator'),
+            revisionBadge: document.getElementById('revisionBadge'),
+            timerModeLabel: document.getElementById('timerModeLabel'),
+            revisionSettingsBtn: document.getElementById('revisionSettingsBtn'),
+            revisionSettingsMenu: document.getElementById('revisionSettingsMenu'),
+            sundayRevisionToggle: document.getElementById('sundayRevisionToggle'),
+            saturdayRevisionToggle: document.getElementById('saturdayRevisionToggle'),
+            saveRevisionSettingsBtn: document.getElementById('saveRevisionSettingsBtn'),
+            viewStudySessionsBtn: document.getElementById('viewStudySessionsBtn'),
+            viewRevisionSessionsBtn: document.getElementById('viewRevisionSessionsBtn'),
+            revisionStatsToggle: document.getElementById('revisionStatsToggle'),
+            saturdayRevisionSubjectToggle: document.getElementById('saturdayRevisionSubjectToggle')
         };
 
         // Charts
@@ -1199,85 +1612,189 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadSubjects();
             loadSessions();
+            loadRevisionSessions();
+            loadRevisionSettings();
             setupEventListeners();
             setupThemeToggle();
             setupDateFilters();
             updateTimerDisplay();
-            initWorker();
+            setupTimerControls();
+            checkDayForRevision();
 
-            // Check worker state on page load
-            timerWorker.postMessage({ command: 'getState' });
+            // Initialize worker after DOM is fully loaded
+            setTimeout(() => {
+                initWorker();
+                // Check worker state after initialization
+                if (timerWorker) {
+                    timerWorker.postMessage({ command: 'getState' });
+                }
+            }, 100);
         });
 
         function setupEventListeners() {
-            // Timer controls
-            elements.startTimerBtn.addEventListener('click', startTimer);
-            elements.pauseTimerBtn.addEventListener('click', pauseTimer);
-            elements.resetTimerBtn.addEventListener('click', resetTimer);
+    // Timer controls - only add if elements exist
+    if (elements.startTimerBtn) elements.startTimerBtn.addEventListener('click', startTimer);
+    if (elements.pauseTimerBtn) elements.pauseTimerBtn.addEventListener('click', pauseTimer);
+    if (elements.resetTimerBtn) elements.resetTimerBtn.addEventListener('click', resetTimer);
 
-            // Quick timer buttons
-            elements.pomodoro25Btn.addEventListener('click', () => {
-                setTimerDuration(25);
-                state.isBreak = false;
-            });
-            elements.pomodoro50Btn.addEventListener('click', () => {
-                setTimerDuration(50);
-                state.isBreak = false;
-            });
-            elements.quickBreakBtn.addEventListener('click', () => {
-                setTimerDuration(5);
-                state.isBreak = true;
-            });
+    // Quick timer buttons
+    if (elements.pomodoro25Btn) {
+        elements.pomodoro25Btn.addEventListener('click', () => {
+            setTimerDuration(25);
+            state.isBreak = false;
+            state.isRevision = false;
+            updateTimerUI();
+        });
+    }
+    
+    if (elements.pomodoro50Btn) {
+        elements.pomodoro50Btn.addEventListener('click', () => {
+            setTimerDuration(50);
+            state.isBreak = false;
+            state.isRevision = false;
+            updateTimerUI();
+        });
+    }
+    
+    if (elements.quickBreakBtn) {
+        elements.quickBreakBtn.addEventListener('click', () => {
+            setTimerDuration(5);
+            state.isBreak = true;
+            state.isRevision = false;
+            updateTimerUI();
+        });
+    }
+    
+    if (elements.revisionSessionBtn) {
+        elements.revisionSessionBtn.addEventListener('click', () => {
+            setTimerDuration(30);
+            state.isBreak = false;
+            state.isRevision = true;
+            updateTimerUI();
+        });
+    }
 
-            // Subject management
-            elements.addSubjectBtnModal.addEventListener('click', () => {
-                new bootstrap.Modal(document.getElementById('addSubjectModal')).show();
-            });
-            elements.saveSubjectBtn.addEventListener('click', addSubject);
+    // Subject management
+    if (elements.addSubjectBtnModal) {
+        elements.addSubjectBtnModal.addEventListener('click', () => {
+            new bootstrap.Modal(document.getElementById('addSubjectModal')).show();
+        });
+    }
+    
+    if (elements.saveSubjectBtn) {
+        elements.saveSubjectBtn.addEventListener('click', addSubject);
+    }
 
-            // History controls
-            elements.historyFilterSubject.addEventListener('change', () => renderSessionHistory());
-            elements.historyFilterDateRange.addEventListener('change', () => {
-                elements.customDateRangeContainer.style.display =
-                    elements.historyFilterDateRange.value === 'custom' ? 'block' : 'none';
-                renderSessionHistory();
-            });
-            elements.historyFilterDateFrom.addEventListener('change', () => renderSessionHistory());
-            elements.historyFilterDateTo.addEventListener('change', () => renderSessionHistory());
-            elements.exportHistoryBtn.addEventListener('click', exportHistory);
-            elements.clearHistoryBtn.addEventListener('click', clearHistory);
+    // History controls
+    if (elements.historyFilterSubject) {
+        elements.historyFilterSubject.addEventListener('change', () => renderSessionHistory());
+    }
+    
+    if (elements.historyFilterDateRange) {
+        elements.historyFilterDateRange.addEventListener('change', () => {
+            elements.customDateRangeContainer.style.display =
+                elements.historyFilterDateRange.value === 'custom' ? 'block' : 'none';
+            renderSessionHistory();
+        });
+    }
+    
+    if (elements.historyFilterDateFrom) {
+        elements.historyFilterDateFrom.addEventListener('change', () => renderSessionHistory());
+    }
+    
+    if (elements.historyFilterDateTo) {
+        elements.historyFilterDateTo.addEventListener('change', () => renderSessionHistory());
+    }
+    
+    if (elements.exportHistoryBtn) {
+        elements.exportHistoryBtn.addEventListener('click', exportHistory);
+    }
+    
+    if (elements.clearHistoryBtn) {
+        elements.clearHistoryBtn.addEventListener('click', clearHistory);
+    }
+    
+    if (elements.viewStudySessionsBtn) {
+        elements.viewStudySessionsBtn.addEventListener('click', () => {
+            state.pagination.viewMode = 'study';
+            state.pagination.currentPage = 1;
+            renderSessionHistory();
+            updateActiveHistoryViewButton();
+        });
+    }
+    
+    if (elements.viewRevisionSessionsBtn) {
+        elements.viewRevisionSessionsBtn.addEventListener('click', () => {
+            state.pagination.viewMode = 'revision';
+            state.pagination.currentPage = 1;
+            renderSessionHistory();
+            updateActiveHistoryViewButton();
+        });
+    }
+    
+    if (elements.revisionStatsToggle) {
+        elements.revisionStatsToggle.addEventListener('click', toggleRevisionStatsView);
+    }
 
-            // Focus mode
-            elements.focusModeBtn.addEventListener('click', toggleFocusMode);
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && document.body.classList.contains('focus-mode')) {
-                    toggleFocusMode();
-                }
-            });
-
-            // Tag suggestions
-            elements.sessionTag.addEventListener('input', showTagSuggestions);
-            elements.sessionTag.addEventListener('focus', showTagSuggestions);
-            elements.sessionTag.addEventListener('blur', () => {
-                setTimeout(() => elements.tagSuggestions.style.display = 'none', 200);
-            });
-
-            // Quick start button
-            elements.quickStartBtn.addEventListener('click', showQuickStartMenu);
-
-            // Theme toggle
-            elements.themeToggle.addEventListener('change', toggleTheme);
-            document.addEventListener('touchmove', handleTouchMove, { passive: false });
-            document.addEventListener('contextmenu', preventDefault);
-            document.addEventListener('copy', preventDefault);
-            document.addEventListener('paste', preventDefault);
-            document.addEventListener('cut', preventDefault);
-            document.addEventListener('selectstart', preventDefault);
-            document.addEventListener('keydown', handleKeyDown);
-
-            setupZoomPrevention();
+    // Focus mode
+    if (elements.focusModeBtn) {
+        elements.focusModeBtn.addEventListener('click', toggleFocusMode);
+    }
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && document.body.classList.contains('focus-mode')) {
+            toggleFocusMode();
         }
+    });
 
+    // Tag suggestions
+    if (elements.sessionTag) {
+        elements.sessionTag.addEventListener('input', showTagSuggestions);
+        elements.sessionTag.addEventListener('focus', showTagSuggestions);
+        elements.sessionTag.addEventListener('blur', () => {
+            setTimeout(() => {
+                if (elements.tagSuggestions) {
+                    elements.tagSuggestions.style.display = 'none';
+                }
+            }, 200);
+        });
+    }
+
+    // Quick start button
+    if (elements.quickStartBtn) {
+        elements.quickStartBtn.addEventListener('click', showQuickStartMenu);
+    }
+
+    // Theme toggle
+    if (elements.themeToggle) {
+        elements.themeToggle.addEventListener('change', toggleTheme);
+    }
+
+    // Revision mode toggle
+    if (elements.revisionModeSwitch) {
+        elements.revisionModeSwitch.addEventListener('change', toggleRevisionMode);
+    }
+
+    // Revision settings
+    if (elements.revisionSettingsBtn) {
+        elements.revisionSettingsBtn.addEventListener('click', toggleRevisionSettingsMenu);
+    }
+    
+    if (elements.saveRevisionSettingsBtn) {
+        elements.saveRevisionSettingsBtn.addEventListener('click', saveRevisionSettings);
+    }
+
+    // Prevent default behaviors
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('contextmenu', preventDefault);
+    document.addEventListener('copy', preventDefault);
+    document.addEventListener('paste', preventDefault);
+    document.addEventListener('cut', preventDefault);
+    document.addEventListener('selectstart', preventDefault);
+    document.addEventListener('keydown', handleKeyDown);
+
+    setupZoomPrevention();
+}
 
         function handleTouchMove(event) {
             if (event.scale !== 1) {
@@ -1437,12 +1954,31 @@
                         selectSubject(id);
                         setTimerDuration(25);
                         state.isBreak = false;
+                        state.isRevision = false;
+                        updateTimerUI();
                         startTimer();
                         menu.remove();
                     });
 
                     menu.appendChild(item);
                 });
+
+                // Add revision quick start
+                const revisionItem = document.createElement('div');
+                revisionItem.className = 'quick-start-item';
+                revisionItem.innerHTML = `
+                    <div style="width: 12px; height: 12px; border-radius: 50%; background-color: var(--revision-color);"></div>
+                    <span>Revision Session</span>
+                `;
+                revisionItem.addEventListener('click', () => {
+                    setTimerDuration(30);
+                    state.isBreak = false;
+                    state.isRevision = true;
+                    updateTimerUI();
+                    startTimer();
+                    menu.remove();
+                });
+                menu.appendChild(revisionItem);
 
                 // Add to DOM
                 elements.quickStartBtn.appendChild(menu);
@@ -1462,13 +1998,28 @@
         }
 
         function loadSubjects() {
-            database.ref('subjects').on('value', (snapshot) => {
-                state.subjects = snapshot.val() || {};
-                renderSubjectSelector();
-                renderSubjectFilter();
-                updateProgressDashboard();
-            });
-        }
+    database.ref('subjects').on('value', (snapshot) => {
+        const subjects = snapshot.val() || {};
+        
+        // Add default revision settings for existing subjects if they don't have them
+        Object.keys(subjects).forEach(id => {
+            if (!subjects[id].revisionSettings) {
+                database.ref(`subjects/${id}/revisionSettings`).set({
+                    sunday: true,
+                    saturday: false
+                });
+            }
+            if (!subjects[id].weeklyRevisionGoal) {
+                database.ref(`subjects/${id}/weeklyRevisionGoal`).set(1);
+            }
+        });
+        
+        state.subjects = subjects;
+        renderSubjectSelector();
+        renderSubjectFilter();
+        updateProgressDashboard();
+    });
+}
 
         function loadSessions() {
             database.ref('sessions').on('value', (snapshot) => {
@@ -1480,49 +2031,233 @@
             });
         }
 
-        function loadTags() {
-            const allTags = new Set();
-            Object.values(state.sessions).forEach(session => {
-                if (session.tags) {
-                    session.tags.split(',').forEach(tag => {
-                        allTags.add(tag.trim());
-                    });
+        function loadRevisionSessions() {
+            database.ref('revisionSessions').on('value', (snapshot) => {
+                state.revisionSessions = snapshot.val() || {};
+                renderSessionHistory();
+                updateStats();
+                checkAchievements();
+                updateProgressDashboard();
+            });
+        }
+
+        function loadRevisionSettings() {
+            database.ref('revisionSettings').on('value', (snapshot) => {
+                const settings = snapshot.val();
+                if (settings) {
+                    state.revisionSettings = settings;
+                    elements.saturdayRevisionToggle.checked = settings.saturdayRevision || false;
+                    
+                    // Update subject Saturday revision settings in the UI
+                    if (settings.subjectSaturdayRevisions) {
+                        state.revisionSettings.subjectSaturdayRevisions = settings.subjectSaturdayRevisions;
+                    }
                 }
             });
-            state.tags = Array.from(allTags);
+        }
+
+        function saveRevisionSettings() {
+            const settings = {
+                sundayRevision: true, // Always enabled
+                saturdayRevision: elements.saturdayRevisionToggle.checked,
+                subjectSaturdayRevisions: state.revisionSettings.subjectSaturdayRevisions || {}
+            };
+            
+            database.ref('revisionSettings').set(settings);
+            toggleRevisionSettingsMenu();
+            
+            // Check if we need to enable revision mode based on new settings
+            checkDayForRevision();
+        }
+
+        function checkDayForRevision() {
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 0 = Sunday, 6 = Saturday
+            
+            // Check if today is Sunday or Saturday with revision enabled
+            const isRevisionDay = dayOfWeek === 0 || 
+                                 (dayOfWeek === 6 && state.revisionSettings.saturdayRevision);
+            
+            if (isRevisionDay) {
+                // Show notification about auto revision mode
+                const notification = document.createElement('div');
+                notification.className = 'achievement-notification';
+                notification.innerHTML = `
+                    <div style="font-size: 30px; color: var(--revision-color);">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </div>
+                    <div>
+                        <h5 style="margin: 0;">Revision Day!</h5>
+                        <p style="margin: 5px 0 0; font-size: 0.9rem;">Today is ${dayOfWeek === 0 ? 'Sunday' : 'Saturday'} - Revision Mode is recommended</p>
+                    </div>
+                `;
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.animation = 'slideOut 0.5s forwards';
+                    setTimeout(() => notification.remove(), 500);
+                }, 5000);
+                
+                // Auto-enable revision mode if it's Sunday
+                if (dayOfWeek === 0) {
+                    toggleRevisionMode({ target: { checked: true } });
+                    elements.revisionModeSwitch.checked = true;
+                }
+            }
+        }
+
+        function toggleRevisionMode(e) {
+    const enableRevision = e.target.checked;
+    
+    if (enableRevision) {
+        document.body.classList.add('revision-mode');
+        elements.revisionModeIndicator.style.display = 'block';
+        state.isRevision = true;
+        updateTimerUI();
+        updateStats();
+        updateProgressDashboard();
+        
+        // Update revision stats button styling and text
+        elements.revisionStatsToggle.classList.remove('btn-outline-revision');
+        elements.revisionStatsToggle.classList.add('btn-revision');
+        elements.revisionStatsToggle.innerHTML = '<i class="bi bi-book"></i> Show Study Stats';
+        
+        setTimeout(() => {
+            elements.revisionModeIndicator.style.display = 'none';
+        }, 3000);
+    } else {
+        document.body.classList.remove('revision-mode');
+        elements.revisionModeIndicator.style.display = 'none';
+        state.isRevision = false;
+        updateTimerUI();
+        updateStats();
+        updateProgressDashboard();
+        
+        // Update revision stats button styling and text
+        elements.revisionStatsToggle.classList.remove('btn-revision');
+        elements.revisionStatsToggle.classList.add('btn-outline-revision');
+        elements.revisionStatsToggle.innerHTML = '<i class="bi bi-arrow-repeat"></i> Show Revision Stats';
+    }
+}
+
+
+        function toggleRevisionSettingsMenu() {
+    elements.revisionSettingsMenu.style.display = 
+        elements.revisionSettingsMenu.style.display === 'block' ? 'none' : 'block';
+        
+    // Close menu when clicking elsewhere
+    const closeMenu = (e) => {
+        if (!elements.revisionSettingsMenu.contains(e.target) && e.target !== elements.revisionSettingsBtn) {
+            elements.revisionSettingsMenu.style.display = 'none';
+            document.removeEventListener('click', closeMenu);
+        }
+    };
+    
+    setTimeout(() => {
+        document.addEventListener('click', closeMenu);
+    }, 100);
+}
+function toggleRevisionStatsView() {
+    const currentlyShowingStudyStats = elements.weeklyProgressContainer.style.display !== 'none';
+    
+    // Toggle visibility
+    elements.weeklyProgressContainer.style.display = currentlyShowingStudyStats ? 'none' : 'block';
+    elements.weeklyRevisionProgressContainer.style.display = currentlyShowingStudyStats ? 'block' : 'none';
+    
+    // Update the button text based on current mode (revision or study)
+    if (state.isRevision) {
+        elements.revisionStatsToggle.innerHTML = currentlyShowingStudyStats 
+            ? '<i class="bi bi-book"></i> Show Study Stats' 
+            : '<i class="bi bi-arrow-repeat"></i> Show Revision Stats';
+    } else {
+        elements.revisionStatsToggle.innerHTML = currentlyShowingStudyStats 
+            ? '<i class="bi bi-arrow-repeat"></i> Show Revision Stats' 
+            : '<i class="bi bi-book"></i> Show Study Stats';
+    }
+    
+    // Update the content being shown
+    if (currentlyShowingStudyStats) {
+        updateWeeklyRevisionProgress();
+    } else {
+        updateWeeklyProgress();
+    }
+}
+
+
+        function updateTimerUI() {
+            if (state.isRevision) {
+                elements.timerDisplay.style.color = 'var(--revision-color)';
+                elements.revisionBadge.style.display = 'inline-block';
+                elements.timerModeLabel.textContent = 'Revision Timer';
+            } else if (state.isBreak) {
+                elements.timerDisplay.style.color = 'var(--warning-color)';
+                elements.revisionBadge.style.display = 'none';
+                elements.timerModeLabel.textContent = 'Break Timer';
+            } else {
+                elements.timerDisplay.style.color = 'var(--primary-color)';
+                elements.revisionBadge.style.display = 'none';
+                elements.timerModeLabel.textContent = 'Study Timer';
+            }
+        }
+
+        function updateActiveHistoryViewButton() {
+            if (state.pagination.viewMode === 'study') {
+                elements.viewStudySessionsBtn.classList.remove('btn-outline-primary');
+                elements.viewStudySessionsBtn.classList.add('btn-primary');
+                elements.viewRevisionSessionsBtn.classList.remove('btn-revision');
+                elements.viewRevisionSessionsBtn.classList.add('btn-outline-revision');
+            } else {
+                elements.viewStudySessionsBtn.classList.add('btn-outline-primary');
+                elements.viewStudySessionsBtn.classList.remove('btn-primary');
+                elements.viewRevisionSessionsBtn.classList.add('btn-revision');
+                elements.viewRevisionSessionsBtn.classList.remove('btn-outline-revision');
+            }
         }
 
         function addSubject() {
-            const name = document.getElementById('subjectInput').value.trim();
-            const weeklyGoal = parseFloat(document.getElementById('weeklyGoalInput').value);
-            const color = document.getElementById('subjectColor').value;
-            const icon = document.getElementById('subjectIcon').value;
+    const name = document.getElementById('subjectInput').value.trim();
+    const weeklyGoal = parseFloat(document.getElementById('weeklyGoalInput').value);
+    const weeklyRevisionGoal = parseFloat(document.getElementById('weeklyRevisionGoalInput').value) || 1;
+    const color = document.getElementById('subjectColor').value;
+    const icon = document.getElementById('subjectIcon').value;
+    const saturdayRevision = document.getElementById('saturdayRevisionToggle').checked;
 
-            if (name && weeklyGoal) {
-                const newSubjectRef = database.ref('subjects').push();
-                newSubjectRef.set({
-                    name,
-                    weeklyGoal,
-                    color,
-                    icon,
-                    createdAt: new Date().toISOString()
-                });
+    if (name && weeklyGoal) {
+        const newSubjectRef = database.ref('subjects').push();
+        
+        newSubjectRef.set({
+            name,
+            weeklyGoal,
+            weeklyRevisionGoal,
+            color,
+            icon,
+            revisionSettings: {
+                sunday: true,  // Always enabled
+                saturday: saturdayRevision
+            },
+            createdAt: new Date().toISOString()
+        });
 
-                // Close modal and reset form
-                bootstrap.Modal.getInstance(document.getElementById('addSubjectModal')).hide();
-                document.getElementById('subjectInput').value = '';
-                document.getElementById('weeklyGoalInput').value = '5';
-            }
-        }
+        // Close modal and reset form
+        bootstrap.Modal.getInstance(document.getElementById('addSubjectModal')).hide();
+        document.getElementById('subjectInput').value = '';
+        document.getElementById('weeklyGoalInput').value = '5';
+        document.getElementById('weeklyRevisionGoalInput').value = '1';
+        document.getElementById('saturdayRevisionToggle').checked = false;
+    }
+}
 
         function renderSubjectSelector() {
             elements.subjectSelector.innerHTML = '';
 
             Object.entries(state.subjects).forEach(([id, subject]) => {
                 const subjectCard = document.createElement('div');
-                subjectCard.className = `subject-card ${state.selectedSubjectId === id ? 'active' : ''}`;
-                subjectCard.style.backgroundColor = subject.color ? `${subject.color}20` : '#4361ee20';
-                subjectCard.style.borderColor = subject.color ? `${subject.color}40` : '#4361ee40';
+                subjectCard.className = `subject-card ${state.selectedSubjectId === id ? 
+                    (state.isRevision ? 'revision-active' : 'active') : ''}`;
+                subjectCard.style.backgroundColor = subject.color ? `${subject.color}20` : 
+                    (state.isRevision ? 'rgba(157, 78, 221, 0.1)' : '#4361ee20');
+                subjectCard.style.borderColor = subject.color ? `${subject.color}40` : 
+                    (state.isRevision ? 'rgba(157, 78, 221, 0.3)' : '#4361ee40');
 
                 subjectCard.innerHTML = `
                     <div style="font-size: 24px; margin-bottom: 8px;">
@@ -1542,7 +2277,7 @@
 
             // Update UI
             document.querySelectorAll('.subject-card').forEach(card => {
-                card.classList.remove('active');
+                card.classList.remove('active', 'revision-active');
             });
 
             if (subjectId) {
@@ -1550,7 +2285,7 @@
                     Object.keys(state.subjects).indexOf(subjectId)
                 ];
                 if (selectedCard) {
-                    selectedCard.classList.add('active');
+                    selectedCard.classList.add(state.isRevision ? 'revision-active' : 'active');
                 }
             }
         }
@@ -1570,25 +2305,36 @@
     const duration = parseInt(elements.studyDuration.value) || 25;
     const subjectId = state.selectedSubjectId;
     
-    if (!subjectId && !state.isBreak) {
+    if (!subjectId && !state.isBreak && !state.isRevision) {
         alert('Please select a subject');
         return;
     }
     
+      // Suggest revision mode if it's a revision day for this subject
+      if (subjectId && isRevisionDayForSubject(subjectId) && !state.isRevision) {
+        if (confirm('Today is a revision day for this subject. Switch to revision mode?')) {
+            state.isRevision = true;
+            updateTimerUI();
+        }
+    }
     // Set up timer
-    state.currentSession = {
-        subject: subjectId,
-        startTime: new Date().toISOString(),
-        duration: duration,
-        tags: elements.sessionTag.value,
-        notes: elements.sessionNotes.value,
-        isBreak: state.isBreak
-    };
+    if (!state.currentSession) {
+        state.currentSession = {
+            subject: subjectId,
+            startTime: new Date().toISOString(),
+            duration: 0, // Start with 0, will be updated in real-time
+            tags: elements.sessionTag.value,
+            notes: elements.sessionNotes.value,
+            isBreak: state.isBreak,
+            isRevision: state.isRevision
+        };
+    }
     
-    // Start countdown through worker
+    // Start or resume countdown through worker
     timerWorker.postMessage({ 
         command: 'start', 
-        duration: duration * 60 
+        duration: duration * 60,
+        resume: state.currentTimeLeft !== duration * 60 // If not starting fresh
     });
     
     // Update UI
@@ -1599,12 +2345,11 @@
     elements.sessionTag.disabled = true;
     elements.sessionNotes.disabled = true;
     
+    // Update button text
+    updateStartButtonText();
+    
     // Update timer display style
-    if (state.isBreak) {
-        elements.timerDisplay.style.color = 'var(--warning-color)';
-    } else {
-        elements.timerDisplay.style.color = 'var(--primary-color)';
-    }
+    updateTimerUI();
     
     // Play start beep
     if (elements.playSounds.checked) {
@@ -1624,24 +2369,75 @@ function pauseTimer() {
     elements.studyDuration.disabled = false;
     elements.sessionTag.disabled = false;
     elements.sessionNotes.disabled = false;
+    updateStartButtonText();
     releaseWakeLock();
 }
 
-function resetTimer() {
-    timerWorker.postMessage({ command: 'reset' });
-    state.currentTimeLeft = (parseInt(elements.studyDuration.value) || 25) * 60;
-    updateTimerDisplay();
-    elements.startTimerBtn.disabled = false;
-    elements.pauseTimerBtn.disabled = true;
-    elements.resetTimerBtn.disabled = true;
-    elements.studyDuration.disabled = false;
-    elements.sessionTag.disabled = false;
-    elements.sessionNotes.disabled = false;
-    state.currentSession = null;
-    state.isBreak = false;
-    elements.timerDisplay.style.color = 'var(--primary-color)';
-    releaseWakeLock();
+function updateStartButtonText() {
+    if (timerWorker) {
+        timerWorker.postMessage({ command: 'getState' });
+        const handleState = (e) => {
+            if (e.data.isRunning !== undefined) {
+                elements.startTimerBtn.innerHTML = e.data.isRunning 
+                    ? '<i class="bi bi-play-fill"></i> Start' 
+                    : '<i class="bi bi-play-fill"></i> Resume';
+                timerWorker.removeEventListener('message', handleState);
+            }
+        };
+        timerWorker.addEventListener('message', handleState);
+    }
 }
+
+// Call this when initializing the timer controls
+function setupTimerControls() {
+    updateStartButtonText();
+    elements.startTimerBtn.addEventListener('click', startTimer);
+    elements.pauseTimerBtn.addEventListener('click', pauseTimer);
+    elements.resetTimerBtn.addEventListener('click', resetTimer);
+}
+
+        function resetTimer() {
+            timerWorker.postMessage({ command: 'reset' });
+            
+            // Wait for worker response before proceeding
+            const handleReset = (e) => {
+                if (e.data.reset) {
+                    const elapsedMinutes = Math.floor(e.data.elapsed / 60);
+                    
+                    if (elapsedMinutes > 0 && state.currentSession) {
+                        // Save the partial session
+                        state.currentSession.duration = elapsedMinutes;
+                        state.currentSession.endTime = new Date().toISOString();
+                        const sessionRef = state.isRevision 
+                            ? database.ref('revisionSessions').push()
+                            : database.ref('sessions').push();
+                        sessionRef.set(state.currentSession);
+                        
+                        // Check for achievements
+                        checkAchievements();
+                    }
+                    
+                    // Reset UI
+                    state.currentTimeLeft = (parseInt(elements.studyDuration.value) || 25) * 60;
+                    updateTimerDisplay();
+                    elements.startTimerBtn.disabled = false;
+                    elements.pauseTimerBtn.disabled = true;
+                    elements.resetTimerBtn.disabled = true;
+                    elements.studyDuration.disabled = false;
+                    elements.sessionTag.disabled = false;
+                    elements.sessionNotes.disabled = false;
+                    state.currentSession = null;
+                    state.isBreak = false;
+                    updateTimerUI();
+                    releaseWakeLock();
+                    
+                    // Remove the event listener after handling
+                    timerWorker.removeEventListener('message', handleReset);
+                }
+            };
+            
+            timerWorker.addEventListener('message', handleReset);
+        }
 
         function updateTimerDisplay() {
             const hours = Math.floor(state.currentTimeLeft / 3600);
@@ -1661,14 +2457,16 @@ function resetTimer() {
         function completeSession() {
             if (state.currentSession) {
                 state.currentSession.endTime = new Date().toISOString();
-                const sessionRef = database.ref('sessions').push();
+                const sessionRef = state.isRevision 
+                    ? database.ref('revisionSessions').push()
+                    : database.ref('sessions').push();
                 sessionRef.set(state.currentSession);
 
                 // Check for achievements
                 checkAchievements();
 
                 // Start break if enabled
-                if (elements.autoStartBreak.checked && !state.isBreak) {
+                if (elements.autoStartBreak.checked && !state.isBreak && !state.isRevision) {
                     state.isBreak = true;
                     setTimerDuration(5);
                     startTimer();
@@ -1684,80 +2482,95 @@ function resetTimer() {
             releaseWakeLock();
         }
 
-
-
-        // Call initAudio on first user interaction (required by browsers)
-        document.addEventListener('click', function initOnInteraction() {
-            if (!audioContext) {
-                initAudio();
-            }
-            document.removeEventListener('click', initOnInteraction);
-        }, { once: true });
-
-
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible' && state.timer !== null) {
-                // If page becomes visible and timer is running, reacquire wake lock
-                requestWakeLock();
-            } else {
-                // If page becomes hidden, release wake lock to save power
-                releaseWakeLock();
-            }
-        });
-
-
-        function renderSessionHistory() {
-            loadTags();
-            const filteredSessions = filterSessions();
-            const paginatedSessions = paginateSessions(filteredSessions);
-
-            elements.sessionHistoryBody.innerHTML = '';
-
-            paginatedSessions.forEach(([id, session]) => {
-                const subject = state.subjects[session.subject] || { name: 'Unknown' };
-                const tr = document.createElement('tr');
-                tr.className = 'session-history-row';
-
-                const tags = session.tags ?
-                    session.tags.split(',').map(tag =>
-                        `<span class="badge tag-badge">${tag.trim()}</span>`
-                    ).join('') : '-';
-
-                tr.innerHTML = `
-                    <td>
-                        <span class="subject-color-indicator" style="background-color: ${subject.color || '#4361ee'}"></span>
-                        ${subject.name}
-                    </td>
-                    <td>${session.duration} mins</td>
-                    <td>${new Date(session.startTime).toLocaleString()}</td>
-                    <td>${tags}</td>
-                    <td>${session.notes ? session.notes.substring(0, 30) + (session.notes.length > 30 ? '...' : '') : '-'}</td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-primary view-session-btn" data-session-id="${id}">
-                            <i class="bi bi-eye"></i>
-                        </button>
-                    </td>
-                `;
-
-                elements.sessionHistoryBody.appendChild(tr);
-            });
-
-            renderPagination(filteredSessions.length);
-
-            // Add event listeners to view buttons
-            document.querySelectorAll('.view-session-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const sessionId = e.currentTarget.getAttribute('data-session-id');
-                    showSessionDetails(sessionId);
-                });
+        function loadTags() {
+    // Extract all tags from both study and revision sessions
+    const allTags = new Set();
+    
+    // Process study sessions
+    Object.values(state.sessions).forEach(session => {
+        if (session.tags) {
+            session.tags.split(',').forEach(tag => {
+                const trimmedTag = tag.trim();
+                if (trimmedTag) allTags.add(trimmedTag);
             });
         }
+    });
+    
+    // Process revision sessions
+    Object.values(state.revisionSessions).forEach(session => {
+        if (session.tags) {
+            session.tags.split(',').forEach(tag => {
+                const trimmedTag = tag.trim();
+                if (trimmedTag) allTags.add(trimmedTag);
+            });
+        }
+    });
+    
+    // Convert Set to array and update state
+    state.tags = Array.from(allTags);
+}
+
+function renderSessionHistory() {
+    loadTags(); // Now this function is defined
+    const filteredSessions = filterSessions();
+    const paginatedSessions = paginateSessions(filteredSessions);
+
+    elements.sessionHistoryBody.innerHTML = '';
+
+    paginatedSessions.forEach(([id, session]) => {
+        const subject = state.subjects[session.subject] || { name: 'Unknown' };
+        const tr = document.createElement('tr');
+        tr.className = 'session-history-row';
+
+        const tags = session.tags ?
+            session.tags.split(',').map(tag =>
+                `<span class="badge ${session.isRevision ? 'tag-badge-revision' : 'tag-badge'}">${tag.trim()}</span>`
+            ).join('') : '-';
+
+        tr.innerHTML = `
+            <td>
+                <span class="subject-color-indicator" style="background-color: ${subject.color || '#4361ee'}"></span>
+                ${subject.name}
+            </td>
+            <td>${session.duration} mins</td>
+            <td>${new Date(session.startTime).toLocaleString()}</td>
+            <td>${tags}</td>
+            <td>${session.notes ? session.notes.substring(0, 30) + (session.notes.length > 30 ? '...' : '') : '-'}</td>
+            <td>
+                <span class="badge ${session.isRevision ? 'bg-revision' : 'bg-primary'}">
+                    ${session.isRevision ? 'Revision' : 'Study'}
+                </span>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary view-session-btn" data-session-id="${id}" data-session-type="${session.isRevision ? 'revision' : 'study'}">
+                    <i class="bi bi-eye"></i>
+                </button>
+            </td>
+        `;
+
+        elements.sessionHistoryBody.appendChild(tr);
+    });
+
+    renderPagination(filteredSessions.length);
+    updateActiveHistoryViewButton();
+
+    // Add event listeners to view buttons
+    document.querySelectorAll('.view-session-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const sessionId = e.currentTarget.getAttribute('data-session-id');
+            const sessionType = e.currentTarget.getAttribute('data-session-type');
+            showSessionDetails(sessionId, sessionType);
+        });
+    });
+}
 
         function filterSessions() {
             const subjectFilter = elements.historyFilterSubject.value;
             const dateRange = elements.historyFilterDateRange.value;
 
-            let filtered = Object.entries(state.sessions);
+            let filtered = state.pagination.viewMode === 'study' 
+                ? Object.entries(state.sessions)
+                : Object.entries(state.revisionSessions);
 
             // Filter by subject
             if (subjectFilter) {
@@ -1842,47 +2655,10 @@ function resetTimer() {
             elements.historyPagination.appendChild(nextLi);
         }
 
-        // Disable zooming through touch gestures and pinch-zoom
-        document.addEventListener('touchmove', function (event) {
-            if (event.scale !== 1) {
-                event.preventDefault();
-            }
-        }, { passive: false });
-
-        // Disable right-click context menu
-        document.addEventListener('contextmenu', function (e) {
-            e.preventDefault();
-        });
-
-        // Disable copy-paste
-        document.addEventListener('copy', function (e) {
-            e.preventDefault();
-        });
-
-        document.addEventListener('paste', function (e) {
-            e.preventDefault();
-        });
-
-        document.addEventListener('cut', function (e) {
-            e.preventDefault();
-        });
-
-        // Disable text selection (optional)
-        document.addEventListener('selectstart', function (e) {
-            e.preventDefault();
-        });
-
-        // Disable keyboard shortcuts for zooming
-        document.addEventListener('keydown', function (e) {
-            if ((e.ctrlKey || e.metaKey) &&
-                (e.key === '+' || e.key === '-' || e.key === '0' || e.key === '=')) {
-                e.preventDefault();
-            }
-        });
-
-
-        function showSessionDetails(sessionId) {
-            const session = state.sessions[sessionId];
+        function showSessionDetails(sessionId, sessionType) {
+            const session = sessionType === 'revision' 
+                ? state.revisionSessions[sessionId] 
+                : state.sessions[sessionId];
             if (!session) return;
 
             const subject = state.subjects[session.subject] || { name: 'Unknown' };
@@ -1909,9 +2685,18 @@ function resetTimer() {
                 </div>
                 
                 <div class="mb-3">
+                    <h6>Type</h6>
+                    <p>
+                        <span class="badge ${session.isRevision ? 'bg-revision' : 'bg-primary'}">
+                            ${session.isRevision ? 'Revision' : 'Study'}
+                        </span>
+                    </p>
+                </div>
+                
+                <div class="mb-3">
                     <h6>Tags</h6>
                     <p>${session.tags ? session.tags.split(',').map(tag =>
-                `<span class="badge tag-badge">${tag.trim()}</span>`
+                `<span class="badge ${session.isRevision ? 'tag-badge-revision' : 'tag-badge'}">${tag.trim()}</span>`
             ).join('') : 'No tags'}</p>
                 </div>
                 
@@ -1924,7 +2709,11 @@ function resetTimer() {
             // Set up delete button
             document.getElementById('deleteSessionBtn').onclick = () => {
                 if (confirm('Are you sure you want to delete this session?')) {
-                    database.ref('sessions/' + sessionId).remove();
+                    if (sessionType === 'revision') {
+                        database.ref('revisionSessions/' + sessionId).remove();
+                    } else {
+                        database.ref('sessions/' + sessionId).remove();
+                    }
                     bootstrap.Modal.getInstance(document.getElementById('sessionDetailsModal')).hide();
                 }
             };
@@ -1935,37 +2724,55 @@ function resetTimer() {
 
         function exportHistory() {
             const filteredSessions = filterSessions();
-            let csv = 'Subject,Duration (mins),Date,Tags,Notes\n';
+            let csv = 'Subject,Duration (mins),Date,Type,Tags,Notes\n';
 
             filteredSessions.forEach(([id, session]) => {
                 const subject = state.subjects[session.subject] || { name: 'Unknown' };
                 const tags = session.tags || '';
                 const notes = session.notes ? session.notes.replace(/"/g, '""') : '';
 
-                csv += `"${subject.name}",${session.duration},"${new Date(session.startTime).toLocaleString()}","${tags}","${notes}"\n`;
+                csv += `"${subject.name}",${session.duration},"${new Date(session.startTime).toLocaleString()}","${session.isRevision ? 'Revision' : 'Study'}","${tags}","${notes}"\n`;
             });
 
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = `studysmart_history_${new Date().toISOString().slice(0, 10)}.csv`;
+            link.download = `studysmart_${state.pagination.viewMode}_history_${new Date().toISOString().slice(0, 10)}.csv`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
 
         function clearHistory() {
-            if (confirm('Are you sure you want to clear all session history? This cannot be undone.')) {
-                database.ref('sessions').remove();
+            const confirmMessage = state.pagination.viewMode === 'study' 
+                ? 'Are you sure you want to clear all study session history? This cannot be undone.'
+                : 'Are you sure you want to clear all revision session history? This cannot be undone.';
+            
+            if (confirm(confirmMessage)) {
+                if (state.pagination.viewMode === 'study') {
+                    database.ref('sessions').remove();
+                } else {
+                    database.ref('revisionSessions').remove();
+                }
             }
         }
 
         function updateProgressDashboard() {
-            updateWeeklyProgress();
-            updateSubjectDistributionChart();
-            updateDailyTrendChart();
-        }
+    if (state.isRevision) {
+        updateWeeklyRevisionProgress(); // Show revision stats by default in revision mode
+        elements.weeklyProgressContainer.style.display = 'none';
+        elements.weeklyRevisionProgressContainer.style.display = 'block';
+        elements.revisionStatsToggle.innerHTML = '<i class="bi bi-book"></i> Show Study Stats';
+    } else {
+        updateWeeklyProgress(); // Show regular study stats in normal mode
+        elements.weeklyProgressContainer.style.display = 'block';
+        elements.weeklyRevisionProgressContainer.style.display = 'none';
+        elements.revisionStatsToggle.innerHTML = '<i class="bi bi-arrow-repeat"></i> Show Revision Stats';
+    }
+    updateSubjectDistributionChart();
+    updateDailyTrendChart();
+}
 
         function updateWeeklyProgress() {
             elements.weeklyProgressContainer.innerHTML = '';
@@ -2008,9 +2815,63 @@ function resetTimer() {
             });
         }
 
+        function updateWeeklyRevisionProgress() {
+    elements.weeklyRevisionProgressContainer.innerHTML = '';
+
+    Object.entries(state.subjects).forEach(([id, subject]) => {
+        const weekAgo = new Date();
+        weekAgo.setDate(weekAgo.getDate() - 7);
+
+        // Count ALL revision sessions for this subject, regardless of day
+        const weeklyRevisionTime = Object.values(state.revisionSessions)
+            .filter(session => session.subject === id)
+            .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+
+        const progressPercentage = Math.min((weeklyRevisionTime / subject.weeklyRevisionGoal) * 100, 100);
+
+        const progressDiv = document.createElement('div');
+        progressDiv.className = 'mb-3';
+        progressDiv.innerHTML = `
+            <div class="d-flex justify-content-between mb-1">
+                <span>
+                    <span class="subject-color-indicator" style="background-color: ${subject.color || '#4361ee'}"></span>
+                    ${subject.name}
+                </span>
+                <span>${weeklyRevisionTime.toFixed(1)}/${subject.weeklyRevisionGoal.toFixed(1)} hrs</span>
+            </div>
+            <div class="progress progress-custom">
+                <div class="progress-bar progress-bar-revision" role="progressbar" 
+                    style="width: ${progressPercentage}%" 
+                    aria-valuenow="${progressPercentage}" 
+                    aria-valuemin="0" 
+                    aria-valuemax="100">
+                    ${progressPercentage.toFixed(0)}%
+                </div>
+            </div>
+        `;
+        elements.weeklyRevisionProgressContainer.appendChild(progressDiv);
+    });
+}
+
+function isRevisionDayForSubject(subjectId) {
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0 = Sunday, 6 = Saturday
+    const subject = state.subjects[subjectId];
+    
+    if (!subject || !subject.revisionSettings) {
+        return dayOfWeek === 0; // Default to Sunday if no settings
+    }
+    
+    return (dayOfWeek === 0) || // Always Sunday
+           (dayOfWeek === 6 && subject.revisionSettings.saturday); // Saturday if enabled
+}
+
+
         function updateSubjectDistributionChart() {
             const subjectStudyTime = {};
+            const subjectRevisionTime = {};
 
+            // Calculate study time
             Object.values(state.sessions).forEach(session => {
                 if (session.isBreak) return;
                 const duration = parseFloat(session.duration) / 60;
@@ -2018,15 +2879,30 @@ function resetTimer() {
                     (subjectStudyTime[session.subject] || 0) + duration;
             });
 
+            // Calculate revision time
+            Object.values(state.revisionSessions).forEach(session => {
+                const duration = parseFloat(session.duration) / 60;
+                subjectRevisionTime[session.subject] =
+                    (subjectRevisionTime[session.subject] || 0) + duration;
+            });
+
             const labels = [];
-            const data = [];
+            const studyData = [];
+            const revisionData = [];
             const backgroundColors = [];
 
-            Object.entries(subjectStudyTime).forEach(([subjectId, hours]) => {
+            // Combine all subjects that have either study or revision time
+            const allSubjectIds = new Set([
+                ...Object.keys(subjectStudyTime),
+                ...Object.keys(subjectRevisionTime)
+            ]);
+
+            allSubjectIds.forEach(subjectId => {
                 const subject = state.subjects[subjectId];
                 if (subject) {
                     labels.push(subject.name);
-                    data.push(hours);
+                    studyData.push(subjectStudyTime[subjectId] || 0);
+                    revisionData.push(subjectRevisionTime[subjectId] || 0);
                     backgroundColors.push(subject.color || '#4361ee');
                 }
             });
@@ -2035,34 +2911,69 @@ function resetTimer() {
 
             if (charts.subjectDistribution) {
                 charts.subjectDistribution.data.labels = labels;
-                charts.subjectDistribution.data.datasets[0].data = data;
+                charts.subjectDistribution.data.datasets[0].data = studyData;
+                charts.subjectDistribution.data.datasets[1].data = revisionData;
                 charts.subjectDistribution.data.datasets[0].backgroundColor = backgroundColors;
                 charts.subjectDistribution.update();
             } else {
                 charts.subjectDistribution = new Chart(chartCtx, {
-                    type: 'doughnut',
+                    type: 'bar',
                     data: {
                         labels: labels,
-                        datasets: [{
-                            data: data,
-                            backgroundColor: backgroundColors,
-                            borderWidth: 1
-                        }]
+                        datasets: [
+                            {
+                                label: 'Study Hours',
+                                data: studyData,
+                                backgroundColor: 'rgba(67, 97, 238, 0.7)',
+                                borderColor: 'rgba(67, 97, 238, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Revision Hours',
+                                data: revisionData,
+                                backgroundColor: 'rgba(157, 78, 221, 0.7)',
+                                borderColor: 'rgba(157, 78, 221, 1)',
+                                borderWidth: 1
+                            }
+                        ]
                     },
                     options: {
                         responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'right',
-                                labels: {
+                        scales: {
+                            x: {
+                                stacked: false,
+                                title: {
+                                    display: true,
+                                    text: 'Subjects',
+                                    color: document.body.classList.contains('dark-mode') ? '#fff' : '#666'
+                                },
+                                ticks: {
                                     color: document.body.classList.contains('dark-mode') ? '#fff' : '#666'
                                 }
                             },
+                            y: {
+                                stacked: false,
+                                title: {
+                                    display: true,
+                                    text: 'Hours',
+                                    color: document.body.classList.contains('dark-mode') ? '#fff' : '#666'
+                                },
+                                ticks: {
+                                    color: document.body.classList.contains('dark-mode') ? '#fff' : '#666'
+                                }
+                            }
+                        },
+                        plugins: {
                             tooltip: {
                                 callbacks: {
                                     label: function (context) {
-                                        return `${context.label}: ${context.raw.toFixed(1)} hours`;
+                                        return `${context.dataset.label}: ${context.raw.toFixed(1)} hours`;
                                     }
+                                }
+                            },
+                            legend: {
+                                labels: {
+                                    color: document.body.classList.contains('dark-mode') ? '#fff' : '#666'
                                 }
                             }
                         }
@@ -2073,6 +2984,7 @@ function resetTimer() {
 
         function updateDailyTrendChart() {
             const dailyStudyTime = {};
+            const dailyRevisionTime = {};
             const now = new Date();
             const monthAgo = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 30);
 
@@ -2082,6 +2994,7 @@ function resetTimer() {
                 date.setDate(date.getDate() + i);
                 const dateStr = date.toISOString().split('T')[0];
                 dailyStudyTime[dateStr] = 0;
+                dailyRevisionTime[dateStr] = 0;
             }
 
             // Populate with actual data
@@ -2095,32 +3008,56 @@ function resetTimer() {
                 }
             });
 
+            Object.values(state.revisionSessions).forEach(session => {
+                const date = new Date(session.startTime).toISOString().split('T')[0];
+                const duration = parseFloat(session.duration) / 60;
+
+                if (dailyRevisionTime.hasOwnProperty(date)) {
+                    dailyRevisionTime[date] += duration;
+                }
+            });
+
             const labels = Object.keys(dailyStudyTime).map(date =>
                 new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
             );
-            const data = Object.values(dailyStudyTime);
+            const studyData = Object.values(dailyStudyTime);
+            const revisionData = Object.values(dailyRevisionTime);
 
             const chartCtx = document.getElementById('dailyTrendChart');
             const textColor = document.body.classList.contains('dark-mode') ? '#fff' : '#666';
 
             if (charts.dailyTrend) {
                 charts.dailyTrend.data.labels = labels;
-                charts.dailyTrend.data.datasets[0].data = data;
+                charts.dailyTrend.data.datasets[0].data = studyData;
+                charts.dailyTrend.data.datasets[1].data = revisionData;
                 charts.dailyTrend.options.scales.x.ticks.color = textColor;
                 charts.dailyTrend.options.scales.y.ticks.color = textColor;
                 charts.dailyTrend.update();
             } else {
                 charts.dailyTrend = new Chart(chartCtx, {
-                    type: 'bar',
+                    type: 'line',
                     data: {
                         labels: labels,
-                        datasets: [{
-                            label: 'Study Hours',
-                            data: data,
-                            backgroundColor: 'rgba(67, 97, 238, 0.7)',
-                            borderColor: 'rgba(67, 97, 238, 1)',
-                            borderWidth: 1
-                        }]
+                        datasets: [
+                            {
+                                label: 'Study Hours',
+                                data: studyData,
+                                backgroundColor: 'rgba(67, 97, 238, 0.2)',
+                                borderColor: 'rgba(67, 97, 238, 1)',
+                                borderWidth: 2,
+                                tension: 0.1,
+                                fill: true
+                            },
+                            {
+                                label: 'Revision Hours',
+                                data: revisionData,
+                                backgroundColor: 'rgba(157, 78, 221, 0.2)',
+                                borderColor: 'rgba(157, 78, 221, 1)',
+                                borderWidth: 2,
+                                tension: 0.1,
+                                fill: true
+                            }
+                        ]
                     },
                     options: {
                         responsive: true,
@@ -2151,7 +3088,7 @@ function resetTimer() {
                             tooltip: {
                                 callbacks: {
                                     label: function (context) {
-                                        return `${context.raw.toFixed(1)} hours`;
+                                        return `${context.dataset.label}: ${context.raw.toFixed(1)} hours`;
                                     }
                                 }
                             },
@@ -2167,51 +3104,106 @@ function resetTimer() {
         }
 
         function updateStats() {
-            // Total study time
-            const totalHours = Object.values(state.sessions)
-                .filter(session => !session.isBreak)
-                .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
-            elements.totalStudyTime.textContent = totalHours.toFixed(1);
+    // Total study time
+    const totalStudyHours = Object.values(state.sessions)
+        .filter(session => !session.isBreak)
+        .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+    
+    // Total revision time
+    const totalRevisionHours = Object.values(state.revisionSessions)
+        .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+    
+    // Combined total or separate based on revision mode
+    if (state.isRevision) {
+        elements.totalStudyTime.textContent = totalRevisionHours.toFixed(1);
+    } else {
+        elements.totalStudyTime.textContent = (totalStudyHours + totalRevisionHours).toFixed(1);
+    }
 
-            // Weekly study time
-            const weekAgo = new Date();
-            weekAgo.setDate(weekAgo.getDate() - 7);
-            const weeklyHours = Object.values(state.sessions)
-                .filter(session =>
-                    new Date(session.startTime) >= weekAgo &&
-                    !session.isBreak
-                )
-                .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
-            elements.weeklyStudyTime.textContent = weeklyHours.toFixed(1);
+    // Weekly study time
+    const weekAgo = new Date();
+    weekAgo.setDate(weekAgo.getDate() - 7);
+    
+    if (state.isRevision) {
+        const weeklyRevisionHours = Object.values(state.revisionSessions)
+            .filter(session => new Date(session.startTime) >= weekAgo)
+            .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+        elements.weeklyStudyTime.textContent = weeklyRevisionHours.toFixed(1);
+    } else {
+        const weeklyStudyHours = Object.values(state.sessions)
+            .filter(session =>
+                new Date(session.startTime) >= weekAgo &&
+                !session.isBreak
+            )
+            .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+        elements.weeklyStudyTime.textContent = (weeklyStudyHours + totalRevisionHours).toFixed(1);
+    }
 
-            // Daily study time
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const dailyHours = Object.values(state.sessions)
-                .filter(session =>
-                    new Date(session.startTime) >= today &&
-                    !session.isBreak
-                )
-                .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
-            elements.dailyStudyTime.textContent = dailyHours.toFixed(1);
+    // Daily study time
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    if (state.isRevision) {
+        const dailyRevisionHours = Object.values(state.revisionSessions)
+            .filter(session => new Date(session.startTime) >= today)
+            .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+        elements.dailyStudyTime.textContent = dailyRevisionHours.toFixed(1);
+    } else {
+        const dailyStudyHours = Object.values(state.sessions)
+            .filter(session =>
+                new Date(session.startTime) >= today &&
+                !session.isBreak
+            )
+            .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+        elements.dailyStudyTime.textContent = (dailyStudyHours + totalRevisionHours).toFixed(1);
+    }
 
-            // Sessions completed
-            const sessionsCount = Object.values(state.sessions)
-                .filter(session => !session.isBreak)
-                .length;
-            elements.sessionsCompleted.textContent = sessionsCount;
+    // Sessions completed
+    if (state.isRevision) {
+        const revisionSessionsCount = Object.values(state.revisionSessions).length;
+        elements.sessionsCompleted.textContent = revisionSessionsCount;
+    } else {
+        const studySessionsCount = Object.values(state.sessions)
+            .filter(session => !session.isBreak)
+            .length;
+        elements.sessionsCompleted.textContent = studySessionsCount + Object.values(state.revisionSessions).length;
+    }
 
-            // Calculate streaks
-            calculateStreaks();
-        }
+    // Update card labels based on revision mode
+    updateStatsCardLabels();
+
+    // Calculate streaks
+    calculateStreaks();
+}
+
+function updateStatsCardLabels() {
+    const labels = document.querySelectorAll('.stats-label');
+    
+    if (state.isRevision) {
+        labels[0].textContent = 'Total Revision Hours';
+        labels[1].textContent = 'This Week (Rev)';
+        labels[2].textContent = 'Today (Rev)';
+        labels[3].textContent = 'Revision Sessions';
+    } else {
+        labels[0].textContent = 'Total Study Hours';
+        labels[1].textContent = 'This Week';
+        labels[2].textContent = 'Today';
+        labels[3].textContent = 'Sessions';
+    }
+}
+
+
 
         function calculateStreaks() {
-            // Get all study dates (without breaks)
+            // Get all study and revision dates (without breaks)
             const studyDates = Object.values(state.sessions)
                 .filter(session => !session.isBreak)
                 .map(session => new Date(session.startTime).toISOString().split('T')[0]);
+            
+            const revisionDates = Object.values(state.revisionSessions)
+                .map(session => new Date(session.startTime).toISOString().split('T')[0]);
 
-            const uniqueDates = [...new Set(studyDates)].sort();
+            const uniqueDates = [...new Set([...studyDates, ...revisionDates])].sort();
 
             let currentStreak = 0;
             let longestStreak = 0;
@@ -2277,13 +3269,18 @@ function resetTimer() {
         }
 
         function checkAchievements() {
-            const totalHours = Object.values(state.sessions)
+            const totalStudyHours = Object.values(state.sessions)
                 .filter(session => !session.isBreak)
                 .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+            
+            const totalRevisionHours = Object.values(state.revisionSessions)
+                .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
 
-            const sessionsCount = Object.values(state.sessions)
+            const studySessionsCount = Object.values(state.sessions)
                 .filter(session => !session.isBreak)
                 .length;
+            
+            const revisionSessionsCount = Object.values(state.revisionSessions).length;
 
             // Check badge achievements
             state.achievements.badges.forEach(badge => {
@@ -2292,13 +3289,13 @@ function resetTimer() {
 
                     switch (badge.id) {
                         case 'first_session':
-                            earned = sessionsCount >= 1;
+                            earned = studySessionsCount >= 1;
                             break;
                         case 'five_sessions':
-                            earned = sessionsCount >= 5;
+                            earned = studySessionsCount >= 5;
                             break;
                         case 'ten_hours':
-                            earned = totalHours >= 10;
+                            earned = totalStudyHours >= 10;
                             break;
                         case 'daily_streak_3':
                             earned = state.currentStreak >= 3;
@@ -2333,6 +3330,15 @@ function resetTimer() {
                                 return subjectHours >= 20;
                             });
                             break;
+                        case 'first_revision':
+                            earned = revisionSessionsCount >= 1;
+                            break;
+                        case 'five_revisions':
+                            earned = revisionSessionsCount >= 5;
+                            break;
+                        case 'revision_master':
+                            earned = revisionSessionsCount >= 20;
+                            break;
                     }
 
                     if (earned && !badge.earned) {
@@ -2351,7 +3357,7 @@ function resetTimer() {
 
             state.achievements.badges.forEach(badge => {
                 const badgeEl = document.createElement('div');
-                badgeEl.className = `achievement-badge ${badge.earned ? '' : 'locked'}`;
+                badgeEl.className = `achievement-badge ${badge.earned ? '' : 'locked'} ${badge.id.includes('revision') ? 'revision-badge' : ''}`;
 
                 badgeEl.innerHTML = `
                     <div class="badge-icon">
@@ -2376,13 +3382,17 @@ function resetTimer() {
             // Render milestones
             elements.milestonesContainer.innerHTML = '';
 
-            const totalHours = Object.values(state.sessions)
+            const totalStudyHours = Object.values(state.sessions)
                 .filter(session => !session.isBreak)
+                .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+            
+            const totalRevisionHours = Object.values(state.revisionSessions)
                 .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
 
             state.achievements.milestones.forEach(milestone => {
-                const progress = Math.min((totalHours / milestone.hours) * 100, 100);
-                const achieved = totalHours >= milestone.hours;
+                const hours = milestone.revision ? totalRevisionHours : totalStudyHours;
+                const progress = Math.min((hours / milestone.hours) * 100, 100);
+                const achieved = hours >= milestone.hours;
 
                 const milestoneEl = document.createElement('div');
                 milestoneEl.className = 'col-md-6 mb-3';
@@ -2393,13 +3403,13 @@ function resetTimer() {
                             <h5 class="card-title">${milestone.title}</h5>
                             <p class="card-text">${milestone.description}</p>
                             <div class="progress progress-custom mb-2">
-                                <div class="progress-bar progress-bar-custom" 
+                                <div class="progress-bar ${milestone.revision ? 'progress-bar-revision' : 'progress-bar-custom'}" 
                                     style="width: ${progress}%">
                                     ${progress.toFixed(0)}%
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <small>${totalHours.toFixed(1)}/${milestone.hours} hours</small>
+                                <small>${hours.toFixed(1)}/${milestone.hours} hours</small>
                                 ${achieved ? '<span class="badge bg-success">Achieved!</span>' : ''}
                             </div>
                         </div>
@@ -2415,7 +3425,7 @@ function resetTimer() {
             notification.className = 'achievement-notification';
 
             notification.innerHTML = `
-                <div style="font-size: 30px; color: gold;">
+                <div style="font-size: 30px; color: ${badge.id.includes('revision') ? 'var(--revision-color)' : 'gold'};">
                     <i class="bi ${badge.icon}"></i>
                 </div>
                 <div>
@@ -2493,7 +3503,7 @@ function resetTimer() {
             }
         }
     </script>
-     <script src="service-worker.js"></script>
+    <script src="service-worker.js"></script>
 </body>
 
 </html>
