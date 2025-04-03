@@ -1582,6 +1582,25 @@
 
         let wakeLock = null;
 
+
+        function getCurrentWeekRange() {
+    const now = new Date();
+    const day = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    
+    // Calculate Monday (if today is Sunday, we go back 6 days)
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+    monday.setHours(0, 0, 0, 0);
+    
+    // Calculate Sunday (if today is Sunday, it's today)
+    const sunday = new Date(now);
+    sunday.setDate(monday.getDate() + 6);
+    sunday.setHours(23, 59, 59, 999);
+    
+    return { monday, sunday };
+}
+
+
         async function requestWakeLock() {
             try {
                 // Check if Wake Lock API is supported
@@ -2774,46 +2793,48 @@ function renderSessionHistory() {
     updateDailyTrendChart();
 }
 
-        function updateWeeklyProgress() {
-            elements.weeklyProgressContainer.innerHTML = '';
+function updateWeeklyProgress() {
+    elements.weeklyProgressContainer.innerHTML = '';
 
-            Object.entries(state.subjects).forEach(([id, subject]) => {
-                const weekAgo = new Date();
-                weekAgo.setDate(weekAgo.getDate() - 7);
+    // Get current week range (Monday to Sunday)
+    const { monday, sunday } = getCurrentWeekRange();
 
-                const weeklyStudyTime = Object.values(state.sessions)
-                    .filter(session =>
-                        session.subject === id &&
-                        new Date(session.startTime) >= weekAgo &&
-                        !session.isBreak
-                    )
-                    .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
+    Object.entries(state.subjects).forEach(([id, subject]) => {
+        const weeklyStudyTime = Object.values(state.sessions)
+            .filter(session =>
+                session.subject === id &&
+                new Date(session.startTime) >= monday &&
+                new Date(session.startTime) <= sunday &&
+                !session.isBreak
+            )
+            .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
 
-                const progressPercentage = Math.min((weeklyStudyTime / subject.weeklyGoal) * 100, 100);
+        const progressPercentage = Math.min((weeklyStudyTime / subject.weeklyGoal) * 100, 100);
 
-                const progressDiv = document.createElement('div');
-                progressDiv.className = 'mb-3';
-                progressDiv.innerHTML = `
-                    <div class="d-flex justify-content-between mb-1">
-                        <span>
-                            <span class="subject-color-indicator" style="background-color: ${subject.color || '#4361ee'}"></span>
-                            ${subject.name}
-                        </span>
-                        <span>${weeklyStudyTime.toFixed(1)}/${subject.weeklyGoal} hrs</span>
-                    </div>
-                    <div class="progress progress-custom">
-                        <div class="progress-bar progress-bar-custom" role="progressbar" 
-                            style="width: ${progressPercentage}%" 
-                            aria-valuenow="${progressPercentage}" 
-                            aria-valuemin="0" 
-                            aria-valuemax="100">
-                            ${progressPercentage.toFixed(0)}%
-                        </div>
-                    </div>
-                `;
-                elements.weeklyProgressContainer.appendChild(progressDiv);
-            });
-        }
+        // Rest of the function remains the same...
+        const progressDiv = document.createElement('div');
+        progressDiv.className = 'mb-3';
+        progressDiv.innerHTML = `
+            <div class="d-flex justify-content-between mb-1">
+                <span>
+                    <span class="subject-color-indicator" style="background-color: ${subject.color || '#4361ee'}"></span>
+                    ${subject.name}
+                </span>
+                <span>${weeklyStudyTime.toFixed(1)}/${subject.weeklyGoal} hrs</span>
+            </div>
+            <div class="progress progress-custom">
+                <div class="progress-bar progress-bar-custom" role="progressbar" 
+                    style="width: ${progressPercentage}%" 
+                    aria-valuenow="${progressPercentage}" 
+                    aria-valuemin="0" 
+                    aria-valuemax="100">
+                    ${progressPercentage.toFixed(0)}%
+                </div>
+            </div>
+        `;
+        elements.weeklyProgressContainer.appendChild(progressDiv);
+    });
+}
 
         function updateWeeklyRevisionProgress() {
     elements.weeklyRevisionProgressContainer.innerHTML = '';
@@ -3103,13 +3124,26 @@ function isRevisionDayForSubject(subjectId) {
             }
         }
 
+        function getTodayRange() {
+    const today = new Date();
+    const start = new Date(today);
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(today);
+    end.setHours(23, 59, 59, 999);
+    return { start, end };
+}
+
         function updateStats() {
-    // Total study time
+    // Get date ranges
+    const { monday: weekStart, sunday: weekEnd } = getCurrentWeekRange();
+    const { start: todayStart, end: todayEnd } = getTodayRange();
+    
+    // Total study time (all time)
     const totalStudyHours = Object.values(state.sessions)
         .filter(session => !session.isBreak)
         .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
     
-    // Total revision time
+    // Total revision time (all time)
     const totalRevisionHours = Object.values(state.revisionSessions)
         .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
     
@@ -3120,45 +3154,47 @@ function isRevisionDayForSubject(subjectId) {
         elements.totalStudyTime.textContent = (totalStudyHours + totalRevisionHours).toFixed(1);
     }
 
-    // Weekly study time
-    const weekAgo = new Date();
-    weekAgo.setDate(weekAgo.getDate() - 7);
-    
+    // Weekly study time (Monday to Sunday)
     if (state.isRevision) {
         const weeklyRevisionHours = Object.values(state.revisionSessions)
-            .filter(session => new Date(session.startTime) >= weekAgo)
+            .filter(session => 
+                new Date(session.startTime) >= weekStart &&
+                new Date(session.startTime) <= weekEnd
+            )
             .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
         elements.weeklyStudyTime.textContent = weeklyRevisionHours.toFixed(1);
     } else {
         const weeklyStudyHours = Object.values(state.sessions)
             .filter(session =>
-                new Date(session.startTime) >= weekAgo &&
+                new Date(session.startTime) >= weekStart &&
+                new Date(session.startTime) <= weekEnd &&
                 !session.isBreak
             )
             .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
         elements.weeklyStudyTime.textContent = (weeklyStudyHours + totalRevisionHours).toFixed(1);
     }
 
-    // Daily study time
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
+    // Daily study time (today)
     if (state.isRevision) {
         const dailyRevisionHours = Object.values(state.revisionSessions)
-            .filter(session => new Date(session.startTime) >= today)
+            .filter(session => 
+                new Date(session.startTime) >= todayStart &&
+                new Date(session.startTime) <= todayEnd
+            )
             .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
         elements.dailyStudyTime.textContent = dailyRevisionHours.toFixed(1);
     } else {
         const dailyStudyHours = Object.values(state.sessions)
             .filter(session =>
-                new Date(session.startTime) >= today &&
+                new Date(session.startTime) >= todayStart &&
+                new Date(session.startTime) <= todayEnd &&
                 !session.isBreak
             )
             .reduce((total, session) => total + parseFloat(session.duration), 0) / 60;
         elements.dailyStudyTime.textContent = (dailyStudyHours + totalRevisionHours).toFixed(1);
     }
 
-    // Sessions completed
+    // Sessions completed count
     if (state.isRevision) {
         const revisionSessionsCount = Object.values(state.revisionSessions).length;
         elements.sessionsCompleted.textContent = revisionSessionsCount;
